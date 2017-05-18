@@ -12,9 +12,9 @@ with open('groundwork_users/version.py', 'rb') as f:
         f.read().decode('utf-8')).group(1)))
 
 setup(
-    name='groundwork_users',
+    name='groundwork-users',
     version=version,
-    url='http://groundwork_users.readthedocs.io',
+    url='http://groundwork-users.readthedocs.io',
     license='MIT license',
     author='team useblocks',
     author_email='groundwork@useblocks.com',
