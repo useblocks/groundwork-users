@@ -1,0 +1,4 @@
+gitpython
+sphinx
+sphinxcontrib-plantuml
+sphinxcontrib-needs
