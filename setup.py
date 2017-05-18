@@ -14,7 +14,7 @@ with open('groundwork_users/version.py', 'rb') as f:
 setup(
     name='groundwork_users',
     version=version,
-    url='http://groundwork_users.readthedocs.org',
+    url='http://groundwork_users.readthedocs.io',
     license='MIT license',
     author='team useblocks',
     author_email='groundwork@useblocks.com',
