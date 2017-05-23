@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import 'user_macro.html' as user_macros %}
+{% block content %}
+<h1>{{_("Usermanager")}} <small>{{user.user}}</small></h1>
+<div class="row">
+    <div class="col-md-12">
+        <form role="form" method="POST">
+            {{ form.hidden_tag() }}
+            {{ user_macros.render_bootstrap_field(form.email, readonly=True) }}
+            {{ user_macros.render_bootstrap_field(form.user_name, readonly=True) }}
+            {{ user_macros.render_bootstrap_field(form.full_name) }}
+            {{ user_macros.render_bootstrap_field(form.domain) }}
+            {{ user_macros.render_bootstrap_field(form.active) }}
+            {{ user_macros.render_bootstrap_field(form.roles) }}
+            {{ user_macros.render_bootstrap_field(form.permissions) }}
+            {{ user_macros.render_bootstrap_field(form.description) }}
+            {{ user_macros.render_bootstrap_field(form.page) }}
+            {{ user_macros.render_bootstrap_field(form.password) }}
+            {% if form.password_confirm %}
+                {{ user_macros.render_bootstrap_field(form.password_confirm) }}
+            {% endif %}
+            <button type="add" name="add" class="btn btn-primary">{{_('Edit')}}</button>
+            <a href="{{url_for('.detail', user_name=user.user_name)}}" class="btn btn-default">{{_('Cancel')}}</a>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#roles").select2();
+        $("#permissions").select2();
+    });
+</script>
+{% endblock %}

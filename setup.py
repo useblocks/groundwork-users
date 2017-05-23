@@ -25,7 +25,7 @@ setup(
     platforms='any',
     setup_requires=[],
     tests_require=[],
-    install_requires=['groundwork'],
+    install_requires=['groundwork', 'groundwork-database', 'groundwork-web', 'flask-security'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
@@ -40,6 +40,6 @@ setup(
     ],
     entry_points={
         'console_scripts': [],
-        'groundwork.plugin': [],
+        'groundwork.plugin': ["gw_users_web=groundwork_users.plugins.gw_users_web_manager.gw_users_web_manager:GwUsersWebManager"],
     }
 )

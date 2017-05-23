@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Group')}} <small>{{group.name}}</small></h1>
+<p>
+    <a href="{{url_for('.edit', group_name=group.name)}}"
+        class="btn btn-default">{{_('Edit group')}}</a>
+
+    <a href="{{url_for('.delete', group_name=group.name)}}"
+        class="btn btn-danger" onclick="return confirm('{{_("Are you sure?")}}')">{{_('Remove')}}</a>
+</p>
+<table class="table table-striped table-bordered">
+    <colgroup>
+        <col width="150">
+        <col/>
+    </colgroup>
+    <tr>
+        <td><strong>{{_('Name')}}</strong></td>
+        <td>{{group.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Description')}}</strong></td>
+        <td>{{group.description}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Users')}}</strong></td>
+        <td>
+            <ul>
+                {%  for user in group.users %}
+                <li><a href="{{url_for('user.detail', user_name=user.user_name)}}">{{user.full_name}}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+</table>
+    </div>
+</div>
+{% endblock %}

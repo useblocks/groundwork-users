@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('API key')}} <small>{{apikey.key}}</small></h1>
+<p>
+    <a href="{{url_for('.edit', apikey=apikey.key)}}"
+        class="btn btn-default">{{_('Edit API key')}}</a>
+
+    <a href="{{url_for('.delete', apikey=apikey.key)}}"
+        class="btn btn-danger" onclick="return confirm('{{_("Are you sure?")}}')">{{_('Remove')}}</a>
+</p>
+<table class="table table-striped table-bordered">
+    <colgroup>
+        <col width="150">
+        <col/>
+    </colgroup>
+    <tr>
+        <td><strong>{{_('ID')}}</strong></td>
+        <td>{{apikey.id}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Key')}}</strong></td>
+        <td>{{apikey.key}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('User')}}</strong></td>
+        <td><a href="{{url_for('user.detail', user_name=apikey.user.user_name)}}">{{apikey.user.full_name}}</a></td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Active')}}</strong></td>
+        <td>{{apikey.active}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Last login')}}</strong></td>
+        <td>{{apikey.last_login}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Generated')}}</strong></td>
+        <td>{{apikey.generated}}</td>
+    </tr>
+</table>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import 'macro.html' as macros %}
+{% block content %}
+<h1>{{_("Role")}} <small>{{ _('Add') }}</small></h1>
+<div class="row">
+    <div class="col-md-12">
+        <form role="form" method="POST">
+            {{ form.hidden_tag() }}
+            {{ macros.render_bootstrap_field(form.name) }}
+            {{ macros.render_bootstrap_field(form.description) }}
+            {{ macros.render_bootstrap_field(form.permissions) }}
+            <button type="add" name="add" class="btn btn-primary">{{_('Add')}}</button>
+            <a href="{{url_for('.view_roles_overview')}}" class="btn btn-default">{{_('Cancel')}}</a>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#permissions").select2();
+    });
+</script>
+{% endblock %}

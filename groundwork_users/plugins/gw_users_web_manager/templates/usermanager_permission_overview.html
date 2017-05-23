@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Permissions')}}</h1>
+{{_('This list shows all registered permissions.')}}
+<p>
+    Syntax of a permission is normally action_level_object. Example: view_all_user or delete_own_user
+</p>
+
+<div>
+    <table id="shared-table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{_('Name')}}</th>
+                <th>{{_('Plugin')}}</th>
+                <th>{{_('Description')}}</th>
+                <th>{{_('Function')}}</th>
+                <th>{{_('Parameters')}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%  for key, value in objects.items() %}
+            <tr>
+                <td><a href="{{url_for('.view_permission_details', permission_name=key)}}">{{key}}</a></td>
+                <td>{{value.plugin}}</td>
+                <td>{{value.description}}</td>
+                <td>{{value.func.__name__}}</td>
+                <td>
+                    {%  if value.params is not none %}
+                        {%  for param in value.params %}
+                    <b>{{ param.name}}</b>: {{ param.description }}<br>
+                        {% endfor %}
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+
+{% endblock %}

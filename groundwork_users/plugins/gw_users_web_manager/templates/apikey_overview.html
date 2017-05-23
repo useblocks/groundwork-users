@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('API Keys')}}</h1>
+{{_('This list shows all registered api keys.')}}
+<p>
+    <a class="btn btn-default" href="{{url_for('.add')}}">
+        {{_("Create apikey")}}
+    </a>
+</p>
+<table id="shared-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('ID')}}</th>
+            <th>{{_('Key')}}</th>
+            <th>{{_('User')}}</th>
+            <th>{{_('Active')}}</th>
+            <th>{{_('Last login')}}</th>
+            <th>{{_('Generated')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for key in apikeys %}
+        <tr>
+            <td>{{key.id}}</td>
+            <td><a href="{{url_for('.detail', apikey=key.key)}}">{{key.key}}</a></td>
+            <td><a href="{{url_for('user.detail', user_name=key.user.user_name)}}">{{key.user.full_name}}</a></td>
+            <td>
+                {% if key.active  -%}
+                <span class="label label-success">{{ key.active }}</span>
+                {%  else %}
+                <span class="label label-warning">{{ key.active }}</span>
+                {%  endif %}
+            </td>
+            <td>{{key.last_login}}</td>
+            <td>{{key.generated}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+
+{% endblock %}

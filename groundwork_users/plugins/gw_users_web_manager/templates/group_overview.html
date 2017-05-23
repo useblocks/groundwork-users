@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Group List')}}</h1>
+<p>
+{#    {% if current_user.has_permission("edit_all_group") %}#}
+    <a class="btn btn-default" href="{{url_for('.add')}}">
+        {{_("Create group")}}</a>
+{#    {% endif %}#}
+</p>
+<table id="shared-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('Group')}}</th>
+            <th>{{_('Description')}}</th>
+            <th>{{_('Amount Users')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for group in groups %}
+        <tr>
+            <td><a href="{{url_for('.detail', group_name=group.name)}}">{{ group.name }}</a></td>
+            <td>{{ group.description }}</td>
+            <td>{{ group.users|length }}</td>
+        </tr>
+        {%  endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+{% endblock %}

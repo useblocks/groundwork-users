@@ -1,1 +1,1 @@
-from .groundwork_users_plugin import groundwork_users_plugin
+from groundwork_users.plugins.gw_users_web_manager.gw_users_web_manager import GwUsersWebManager

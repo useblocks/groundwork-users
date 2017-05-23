@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Domain List')}}</h1>
+<p>
+{#    {% if current_user.has_permission("edit_all_domain") %}#}
+    <a class="btn btn-default" href="{{url_for('.add')}}">
+        {{_("Create domain")}}</a>
+{#    {% endif %}#}
+</p>
+<table id="shared-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('Domain')}}</th>
+            <th>{{_('Contact')}}</th>
+            <th>{{_('Amount Users')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for domain in domains %}
+        <tr>
+            <td><a href="{{url_for('.detail', domain_name=domain.name)}}">{{ domain.name }}</a></td>
+            <td>{{ domain.contact }}</td>
+            <td>{{ domain.users|length }}</td>
+        </tr>
+        {%  endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+{% endblock %}

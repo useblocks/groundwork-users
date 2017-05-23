@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Role')}} <small>{{role.name}}</small></h1>
+<p>
+    {% if current_user.has_permission("edit_all_role") %}
+    <a href="{{url_for('.view_roles_edit', role_name=role.name)}}"
+        class="btn btn-default">{{_('Edit role')}}</a>
+    {% endif %}
+
+    {% if current_user.has_permission("delete_all_role") %}
+    <a href="{{url_for('.view_roles_delete', role_name=role.name)}}"
+        class="btn btn-danger" onclick="return confirm('{{_("Are you sure?")}}')">{{_('Remove')}}</a>
+    {% endif %}
+</p>
+<table class="table table-striped table-bordered">
+    <colgroup>
+        <col width="150">
+        <col/>
+    </colgroup>
+    <tr>
+        <td><strong>{{_('Name')}}</strong></td>
+        <td>{{role.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Description')}}</strong></td>
+        <td>{{role.description}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Permissions')}}</strong></td>
+        <td>
+            <ul>
+                {%  for p in role.permissions %}
+                <li><a href="{{url_for('.view_permission_details', permission_name=p.name)}}">{{p.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Users')}}</strong></td>
+        <td>
+            <ul>
+                {%  for user in role.users %}
+                <li><a href="{{url_for('.view_usermanager_detail', user=user.user)}}">{{user.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+</table>
+    </div>
+</div>
+{% endblock %}

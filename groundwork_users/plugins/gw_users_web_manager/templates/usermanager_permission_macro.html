@@ -1,0 +1,11 @@
+{% macro usermanager_permission(permission) %}
+    {% if not link %}
+        {% set link_url= "" %}
+    {% else %}
+        {% set link_url= "href="+link %}
+    {% endif %}
+
+<a class="label label-{{type}} usermanager_label glyphicon glyphicon-user" link_url>
+    {{username}}
+</a>
+{% endmacro %}

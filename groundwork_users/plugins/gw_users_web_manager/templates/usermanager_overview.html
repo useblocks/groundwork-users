@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('User List')}}</h1>
+<p>
+    <a class="btn btn-default" href="{{url_for('.add')}}">
+        {{_("Create a new user")}}</a>
+</p>
+<table id="overview-table"class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('User')}}</th>
+            <th>{{_('Name')}}</th>
+            <th>{{_('E-Mail')}}</th>
+            <th>{{_('Description')}}</th>
+            <th>{{_('Domain')}}</th>
+            <th>{{_('Active')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for user in users %}
+        <tr>
+            <td><a href="{{url_for('.detail', user_name=user.user_name)}}">{{ user.user_name }}</a></td>
+            <td>{{ user.full_name }}</td>
+            <td><a href="mailto:{{ user.email}}">{{ user.email }}</a></td>
+            <td>{{ user.description }}</td>
+            <td><a href="{{url_for('domain.detail', domain_name=user.domain.name)}}">{{ user.domain.name }}</a></td>
+            <td>
+                {% if user.active  -%}
+                <span class="label label-success">{{ user.active }}</span>
+                {%  else %}
+                <span class="label label-warning">{{ user.active }}</span>
+                {%  endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#overview-table").DataTable();
+    } );
+</script>
+{% endblock %}

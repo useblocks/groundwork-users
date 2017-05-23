@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Roles List')}}</h1>
+<p>
+    {% if current_user.has_permission("create_all_role")%}
+    <a class="btn btn-default" href="{{url_for('.view_roles_add')}}">
+        {{_("Create a role")}}</a>
+    {% endif %}
+</p>
+<table id="shared-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('Role')}}</th>
+            <th>{{_('Description')}}</th>
+            <th>{{_('Permissions')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for role in roles %}
+        <tr>
+            <td><a href="{{url_for('.view_roles_details', role_name=role.name)}}">{{ role.name }}</td>
+            <td>{{ role.description }}</td>
+            <td>
+                <ul>
+                    {%  for p in role.permissions %}
+                    <li><a href="{{url_for('.view_permission_details', permission_name=p.name)}}">{{p.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+{% endblock %}

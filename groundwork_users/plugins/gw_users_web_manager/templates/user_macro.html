@@ -1,0 +1,64 @@
+{% macro dropdown(entries, link_icon, link_name) %}
+<li class="dropdown">
+  <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+    <i class="{{link_icon}}"></i> {{ _(link_name) }} <span class="caret"></span>
+  </a>
+  <ul id="g-account-menu" class="dropdown-menu" role="menu">
+    {% for entry in entries  %}
+      {% if entry["link_roles"] | length == 0 %}
+      <li><a href="{{ entry["link_url"] }}">{{ _(entry["link_name"]) }}</a></li>
+      {% else %}
+        {% for role in entry["link_roles"] %}
+          {% if current_user.has_role(role) %}
+      <li><a href="{{ entry["link_url"] }}">{{ _(entry["link_name"]) }}</a></li>
+            {% break %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+</li>
+{% endmacro %}
+
+{% macro lilink(link_url, link_icon, link_name) %}
+<li>
+  <a href="{{ link_url  }}"><i class="{{ link_icon }}"></i> {{ _(link_name) }}</a>
+</li>
+{% endmacro %}
+{% macro link(link_url, link_icon, link_name) %}
+<a href="{{ link_url }}">
+  <strong><i class="{{ link_icon }}"></i> {{ _(link_name) }}</strong>
+</a>
+{% endmacro %}
+
+{% macro render_bootstrap_field(field, readonly=False) %}
+<div class="form-group {% if field.errors %} has-error {% endif %}">
+    <label class="control-label">{{ field.label.text }}</label>
+    {{ field(class='form-control', readonly=readonly)|safe }}
+    {% if field.errors %}
+    {% for error in field.errors %}
+    <span class="text-danger">{{ error }}</span><br>
+    {% endfor %}
+    {% endif %}
+    <p>
+        {{ field.description|safe }}
+    </p>
+</div>
+{% endmacro %}
+
+{% macro render_bootstrap_checkbox_field(field) %}
+<div class="checkbox {% if field.errors %} has-error {% endif %}">
+    <label>
+        {{ field()|safe }}
+        {{ field.label.text }}
+    </label>
+    {% if field.errors %}
+    {% for error in field.errors %}
+    <span class="text-danger">{{ error }}</span><br>
+    {% endfor %}
+    {% endif %}
+    <p>
+        {{ field.description|safe }}
+    </p>
+</div>
+{% endmacro %}
