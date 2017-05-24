@@ -8,8 +8,11 @@ class PermissionsPlugin:
         return self.app.permissions.register(name=name, description=description,
                                              func=func, params=params, plugin=self.plugin)
 
-    def get(self, permission_name=None):
-        return self.app.permissions.get(permission_name, plugin=self.plugin)
+    def get_registered(self, permission_name=None):
+        return self.app.permissions.get_registered(permission_name, plugin=self.plugin)
+
+    def get_from_db(self, permission_name=None):
+        return self.app.permissions.get_from_db(permission_name, plugin=self.plugin)
 
 
 class PermissionsApplication:
@@ -41,10 +44,9 @@ class PermissionsApplication:
 
         # Ok, we still need som permission information in our db, because user objects will be mapped to them
         # and the mapping is performed by an administrator, who needs to keep the mapping even if the system restarts.
-
-        if hasattr(func, __name__):
+        try:
             func_name = func.__name__
-        else:
+        except AttributeError:
             func_name = None
 
         db_permission = self.users_db.query(self.Permission).filter_by(name=name).first()
@@ -66,9 +68,9 @@ class PermissionsApplication:
             self.users_db.add(db_permission)
             self.users_db.commit()
 
-        return self._permissions[name]
+        return db_permission
 
-    def get(self, permission_name=None, plugin=None):
+    def get_registered(self, permission_name=None, plugin=None):
         if permission_name is None:
             return self._permissions
 
@@ -80,6 +82,16 @@ class PermissionsApplication:
         if plugin is not None and plugin != permission.plugin:
             return None
 
+        return permission
+
+    def get_from_db(self, permission_name=None, plugin=None, **kwargs):
+        if permission_name is not None:
+            kwargs["name"] = permission_name
+
+        if plugin is None:
+            permission = self.users_db.query(self.Permission).filter_by(**kwargs).all()
+        else:
+            permission = self.users_db.query(self.Permission).filter_by(**kwargs, plugin_name=plugin.name).all()
         return permission
 
 

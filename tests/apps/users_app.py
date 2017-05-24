@@ -26,8 +26,13 @@ def start_app():
     app.groups.register("empty_group", plugin=app)
 
     # Permission registration
-    app.permissions.register("permission_no_func", plugin=app)
-    app.permissions.register("permission_with_func", func=_permission_func, plugin=app)
+    permission_1 = app.permissions.register("permission_no_func", plugin=app)
+    permission_2 = app.permissions.register("permission_with_func", func=_permission_func, plugin=app)
+
+    # Role registration
+    app.roles.register("empty_role", plugin=app)
+    app.roles.register("full_role", description="Description for full role",
+                       users=[daniel, marco], permissions=[permission_1, permission_2], plugin=app)
 
     app.commands.start_cli()
 

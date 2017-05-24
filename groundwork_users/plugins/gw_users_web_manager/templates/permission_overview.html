@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Permission List')}}</h1>
+
+<table id="shared-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{_('Permission')}}</th>
+            <th>{{_('Description')}}</th>
+            <th>{{_('Plugin')}}</th>
+            <th>{{_('Currently useable?')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%  for permission in permissions %}
+        <tr>
+            <td><a href="{{url_for('.detail', permission_name=permission.name)}}">{{ permission.name }}</a></td>
+            <td>{{ permission.description }}</td>
+            <td>{{ permission.plugin_name }}</td>
+            <td>
+                {% if permission.name in registered_permissions  -%}
+                <span class="label label-success">Yes</span>
+                {%  else %}
+                <span class="label label-warning">No</span>
+                {%  endif %}
+            </td>
+        </tr>
+        {%  endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $("#shared-table").DataTable();
+    } );
+</script>
+{% endblock %}

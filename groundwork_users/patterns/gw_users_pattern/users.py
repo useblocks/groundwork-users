@@ -8,9 +8,9 @@ class UsersPlugin:
         self.log = plugin.log
 
     def register(self, user_name, email, password, full_name="", page=None, description=None,
-                 domain=None, roles=None, permissions=None, confirmed_at=None, active=True):
+                 domain=None, groups=None, roles=None, permissions=None, confirmed_at=None, active=True):
         return self.app.users.register(user_name, email, password, full_name, page, description,
-                                       self.plugin, domain, roles, permissions, confirmed_at, active)
+                                       self.plugin, domain, groups, roles, permissions, confirmed_at, active)
 
     def get(self, user_name=None, **kwargs):
         return self.app.users.get(user_name=user_name, plugin=self.plugin, **kwargs)
@@ -32,7 +32,7 @@ class UsersApplication:
             raise NoUserTableException("Database table model 'User' not found")
 
     def register(self, user_name, email, password, full_name=None, page=None, description=None,
-                 plugin=None, domain=None, roles=None, permissions=None, confirmed_at=None, active=True):
+                 plugin=None, domain=None, groups=None, roles=None, permissions=None, confirmed_at=None, active=True):
         if plugin is None:
             raise ValueError("plugin must not be None")
 
@@ -44,6 +44,9 @@ class UsersApplication:
         else:
             plugin_name = plugin.name
 
+        if groups is None:
+            groups = []
+
         if roles is None:
             roles = []
 
@@ -52,7 +55,7 @@ class UsersApplication:
 
         user = self.User(user_name=user_name, email=email, password_hash=password_hash,
                          full_name=full_name, plugin_name=plugin_name, domain=domain,
-                         page=page, description=description,
+                         page=page, description=description, groups=groups,
                          roles=roles, permissions=permissions, confirmed_at=confirmed_at, active=active)
         self.users_db.add(user)
         self.users_db.commit()

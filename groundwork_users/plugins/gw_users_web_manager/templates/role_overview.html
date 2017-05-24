@@ -2,10 +2,8 @@
 {% block content %}
 <h1>{{_('Roles List')}}</h1>
 <p>
-    {% if current_user.has_permission("create_all_role")%}
-    <a class="btn btn-default" href="{{url_for('.view_roles_add')}}">
+    <a class="btn btn-default" href="{{url_for('.add')}}">
         {{_("Create a role")}}</a>
-    {% endif %}
 </p>
 <table id="shared-table" class="table table-striped">
     <thead>
@@ -18,12 +16,12 @@
     <tbody>
         {%  for role in roles %}
         <tr>
-            <td><a href="{{url_for('.view_roles_details', role_name=role.name)}}">{{ role.name }}</td>
+            <td><a href="{{url_for('.detail', role_name=role.name)}}">{{ role.name }}</td>
             <td>{{ role.description }}</td>
             <td>
                 <ul>
                     {%  for p in role.permissions %}
-                    <li><a href="{{url_for('.view_permission_details', permission_name=p.name)}}">{{p.name}}</a></li>
+                    <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
                     {% endfor %}
                 </ul>
             </td>

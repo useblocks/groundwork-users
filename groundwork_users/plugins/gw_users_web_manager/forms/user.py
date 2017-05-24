@@ -30,17 +30,20 @@ def get_user_form(plugin):
         permissions = SelectMultipleField(
             _('Select permissions'),
             description="Select permissions",
-            choices=[
-                ("", ""),
-            ],
+            choices=[("", "")],
         )
+        groups = QuerySelectMultipleField(
+            _('Select groups'),
+            description="Select groups",
+            id="groups",
+            get_label="name",
+        )
+
         page = StringField(
-            _('Page'),
-            [Required()]
+            _('Page')
         )
         description = StringField(
-            _('Description'),
-            [Required()]
+            _('Description')
         )
         domain = QuerySelectField(
             _('Domain'),

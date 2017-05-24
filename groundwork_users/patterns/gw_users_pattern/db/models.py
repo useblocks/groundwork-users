@@ -83,6 +83,7 @@ def get_model_classes(db):
         id = Column(Integer(), primary_key=True)
         name = Column(Text(80), unique=True)
         description = Column(Text(255))
+        plugin_name = Column(Text())
         permissions = relationship('Permission', secondary=permissions_roles,
                                    backref=backref('roles', lazy='dynamic'))
 

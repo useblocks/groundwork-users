@@ -70,7 +70,7 @@
         <td>
             <ul>
                 {%  for r in user.roles %}
-                <li><a href="{{url_for('.view_roles_details', role_name=r.name)}}">{{ r.name }}</a></li>
+                <li><a href="{{url_for('role.detail', role_name=r.name)}}">{{ r.name }}</a></li>
                 {% endfor %}
             </ul>
         </td>
@@ -80,8 +80,7 @@
         <td>
             <ul>
                 {%  for p in user.permissions %}
-{#                <li><a href="{{url_for('.view_permission_details', permission_name=p.name)}}">{{p.name}}</a></li>#}
-                <li>{{p.name}}</li>
+                <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
                 {% endfor %}
             </ul>
         </td>
@@ -90,10 +89,10 @@
         <td><strong>{{_('Permissions by roles')}}</strong></td>
         <td>
             {%  for role in user.roles -%}
-            <b><a href="{{url_for('.view_roles_details', role_name=role.name)}}">{{ role.name }}</a></b>
+            <b><a href="{{url_for('role.detail', role_name=role.name)}}">{{ role.name }}</a></b>
             <ul>
                 {%  for p in role.permissions -%}
-                <li><a href="{{url_for('.view_permission_details', permission_name=p.name)}}">{{p.name}}</a></li>
+                <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
                 {% endfor -%}
             </ul>
             {% endfor -%}

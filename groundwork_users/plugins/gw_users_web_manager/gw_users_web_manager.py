@@ -8,6 +8,8 @@ from groundwork_users.plugins.gw_users_web_manager.views.user_views import UserV
 from groundwork_users.plugins.gw_users_web_manager.views.domain_views import DomainViews
 from groundwork_users.plugins.gw_users_web_manager.views.apikey_views import ApiKeyViews
 from groundwork_users.plugins.gw_users_web_manager.views.group_views import GroupViews
+from groundwork_users.plugins.gw_users_web_manager.views.permission_views import PermissionViews
+from groundwork_users.plugins.gw_users_web_manager.views.role_views import RoleViews
 
 
 class GwUsersWebManager(GwUsersPattern, GwWebPattern):
@@ -20,6 +22,7 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.role_model = None
         self.domain_model = None
         self.apikey_model = None
+        self.group_model = None
         self._user_menu = None
         self._base_dir = os.path.dirname(__file__)
         self._template_folder = os.path.join(self._base_dir, "templates")
@@ -32,6 +35,7 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.role_model = self.users_db.classes.get("Role")
         self.domain_model = self.users_db.classes.get("Domain")
         self.apikey_model = self.users_db.classes.get("Apikey")
+        self.group_model = self.users_db.classes.get("Group")
 
         self._user_menu = self.web.menus.register("User Manager", "/user/")
 
@@ -39,6 +43,8 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.activate_domain()
         self.activate_apikey()
         self.activate_group()
+        self.activate_permission()
+        self.activate_role()
 
     def activate_user(self):
         views = UserViews(self)
@@ -158,6 +164,54 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.web.routes.register("/delete/<group_name>", ["GET"], endpoint=views.delete,
                                  name="view_group_delete",
                                  context=context.name, description="Deletes a group")
+
+    def activate_permission(self):
+        views = PermissionViews(self)
+        prefix_url = "/permission"
+        context = self.web.contexts.register(name="permission",
+                                             template_folder=self._template_folder,
+                                             static_folder=self._static_folder,
+                                             url_prefix=prefix_url,
+                                             description="Context for permission related objects and actions."
+                                             )
+
+        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_permissions",
+                                 context=context.name, description="Show all registered permissions")
+        self._user_menu.register("Permissions", prefix_url)
+
+        self.web.routes.register("/<permission_name>", ["GET"], endpoint=views.detail,
+                                 name="view_permission_detail",
+                                 context=context.name, description="Shows details of a permission")
+        
+    def activate_role(self):
+        views = RoleViews(self)
+        prefix_url = "/role"
+        context = self.web.contexts.register(name="role",
+                                             template_folder=self._template_folder,
+                                             static_folder=self._static_folder,
+                                             url_prefix=prefix_url,
+                                             description="Context for role related objects and actions."
+                                             )
+
+        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_roles",
+                                 context=context.name, description="Show all registered roles")
+        self._user_menu.register("Roles", prefix_url)
+
+        self.web.routes.register("/<role_name>", ["GET"], endpoint=views.detail,
+                                 name="view_role_detail",
+                                 context=context.name, description="Shows details of a role")
+
+        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+                                 name="view_role_add",
+                                 context=context.name, description="Shows mask for adding a new role")
+
+        self.web.routes.register("/edit/<role_name>", ["GET", "POST"], endpoint=views.edit,
+                                 name="view_role_edit",
+                                 context=context.name, description="Shows mask for editing a role")
+
+        self.web.routes.register("/delete/<role_name>", ["GET"], endpoint=views.delete,
+                                 name="view_role_delete",
+                                 context=context.name, description="Deletes a role")
 
     def deactivate(self):
         pass

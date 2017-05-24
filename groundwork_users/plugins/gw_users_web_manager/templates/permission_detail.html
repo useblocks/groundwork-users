@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{_('Permission')}} <small>{{permission.name}}</small></h1>
+<table class="table table-striped table-bordered">
+    <colgroup>
+        <col width="150">
+        <col/>
+    </colgroup>
+    <tr>
+        <td><strong>{{_('Name')}}</strong></td>
+        <td>{{permission.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Description')}}</strong></td>
+        <td>{{permission.description}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Function name')}}</strong></td>
+        <td>{{permission.func_name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Function Parameters')}}</strong></td>
+        <td>{{permission.func_params}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Plugin')}}</strong></td>
+        <td>{{permission.plugin_name}}</td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Currently useable?')}}</strong></td>
+        <td>
+            {% if permission.name == registered_permission.name  -%}
+            <span class="label label-success">Yes</span>
+            {%  else %}
+            <span class="label label-warning">No</span>
+            {%  endif %}
+        </td>
+    </tr>
+
+</table>
+    </div>
+</div>
+{% endblock %}

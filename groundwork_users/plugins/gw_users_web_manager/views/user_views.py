@@ -18,36 +18,14 @@ class UserViews:
         form = get_user_form(self.plugin)()
         form.roles.query = self.plugin.role_model.query.filter()
         form.domain.query = self.plugin.domain_model.query.filter()
+        form.groups.query = self.plugin.group_model.query.filter()
 
-        form.permissions.choices = [(a, a) for a in self.plugin.app.permissions.get().keys()]
+        form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 
         if form.validate_on_submit():
             # For the given permission names we need to find out the permission database objects and set them as
             # the permissions for the user
             permissions_db = []
-
-            # ToDo: Reactivate permission creation
-            # for perm in form.permissions.data:
-            #     permission_object = permission_store.get_permission_by_name(perm)
-            #     if permission_object is None:
-            #         if registered_permissions[perm]["func"] is None:
-            #             func_name = None
-            #         else:
-            #             func_name = registered_permissions[perm]["func"].__name__
-            #
-            #         if registered_permissions[perm]["func"] is None:
-            #             func_params = None
-            #         else:
-            #             func_params = registered_permissions[perm]["params"]
-            #
-            #         # If the permission is not in the database, we need to create it.
-            #         permission_object = permission_store.create_permission(name=perm,
-            #                                                                func_name=func_name,
-            #                                                                func_params=json.dumps(func_params),
-            #                                                                plugin_name=registered_permissions[perm][
-            #                                                                    "plugin"])
-            #         permission_store.commit()
-            #     permissions_db.append(permission_object)
 
             self.plugin.users.register(user_name=form.user_name.data,
                                        password=form.password.data,
@@ -56,6 +34,7 @@ class UserViews:
                                        page=form.page.data,
                                        description=form.description.data,
                                        domain=form.domain.data,
+                                       groups=form.groups.data,
                                        roles=form.roles.data,
                                        permissions=permissions_db,
                                        confirmed_at=None,
@@ -85,8 +64,9 @@ class UserViews:
         form = get_user_form(self.plugin)()
         form.roles.query = self.plugin.role_model.query.filter()
         form.domain.query = self.plugin.domain_model.query.filter()
+        form.groups.query = self.plugin.group_model.query.filter()
 
-        form.permissions.choices = [(a, a) for a in self.plugin.app.permissions.get().keys()]
+        form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 
         # XXX email, user are readonly
         form.email.validators = []
@@ -100,6 +80,7 @@ class UserViews:
             form.page.data = user.page
             form.description.data = user.description
             form.domain.data = user.domain
+            form.groups.data = user.groups
             form.roles.data = user.roles
             form.permissions.data = [a.name for a in user.permissions]
             form.active.data = user.active
@@ -123,6 +104,7 @@ class UserViews:
             user.page = form.page.data
             user.description = form.description.data
             user.domain = form.domain.data
+            user.groups = form.groups.data
             user.roles = form.roles.data
             user.permissions = permissions_db
             user.active = form.active.data
