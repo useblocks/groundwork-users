@@ -4,8 +4,9 @@ class GroupsPlugin:
         self.app = plugin.app
         self.log = plugin.log
 
-    def register(self, name, description=None, users=None):
-        return self.app.groups.register(name, description, users, plugin=self.plugin)
+    def register(self, name, description=None, users=None, permissions=None, roles=None):
+        return self.app.groups.register(name, description, users,
+                                        permissions=permissions, roles=roles, plugin=self.plugin)
 
     def get(self, group_name=None):
         return self.app.groups.get(group_name, plugin=self.plugin)
@@ -23,15 +24,23 @@ class GroupsApplication:
         if self.Group is None:
             raise NoGroupTableException("Database table model 'Group' not found")
 
-    def register(self, name, description=None, users=None, plugin=None):
+    def register(self, name, description=None, users=None, permissions=None, roles=None, plugin=None):
         if plugin is None:
             raise ValueError("plugin must not be None")
         if users is None:
             users = []
 
+        if permissions is None:
+            permissions = []
+
+        if roles is None:
+            roles = []
+
         group = self.Group(name=name,
                            description=description,
                            users=users,
+                           permissions=permissions,
+                           roles=roles,
                            plugin_name=plugin.name)
         self.users_db.add(group)
         self.users_db.commit()

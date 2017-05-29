@@ -1,6 +1,6 @@
 from flask_babel import _
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, ValidationError
+from wtforms import StringField, TextAreaField, ValidationError, SelectMultipleField
 from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import DataRequired
 
@@ -25,6 +25,17 @@ def get_group_form(plugin):
             description="Select group members",
             id="users",
             get_label="full_name",
+        )
+        roles = QuerySelectMultipleField(
+            _('Select roles'),
+            description="Select permission roles",
+            id="roles",
+            get_label="name",
+        )
+        permissions = SelectMultipleField(
+            _('Select permissions'),
+            description="Select permissions",
+            choices=[("", "")],
         )
 
     return GroupForm

@@ -106,6 +106,27 @@
         </td>
     </tr>
     <tr>
+        <td><strong>{{_('Permissions by groups')}}</strong></td>
+        <td>
+            {%  for group in user.groups -%}
+                {%  for role in group.roles -%}
+                <b><a href="{{url_for('role.detail', role_name=role.name)}}">{{ role.name }}</a></b>
+                <ul>
+                    {%  for p in role.permissions -%}
+                    <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
+                    {% endfor -%}
+                </ul>
+                {% endfor -%}
+                <b>Directly mapped permissions</b>
+                {%  for p in group.permissions %}
+                <ul>
+                    <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
+                </ul>
+                {% endfor %}
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
         <td><strong>{{_('API keys')}}</strong></td>
         <td>
             <ul>

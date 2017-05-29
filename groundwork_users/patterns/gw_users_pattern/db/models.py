@@ -75,6 +75,36 @@ def get_model_classes(db, app):
         )
     )
 
+    roles_groups = Table(
+        'roles_groups',
+        metadata,
+        Column(
+            'group_id',
+            Integer(),
+            ForeignKey('group.id')
+        ),
+        Column(
+            'role_id',
+            Integer(),
+            ForeignKey('role.id')
+        )
+    )
+
+    permissions_groups = Table(
+        'permissions_groups',
+        metadata,
+        Column(
+            'group_id',
+            Integer(),
+            ForeignKey('group.id')
+        ),
+        Column(
+            'permission_id',
+            Integer(),
+            ForeignKey('permission.id')
+        )
+    )
+
     class Role(Base, RoleMixin):
         """
         Class/Table for storing available roles.
@@ -110,6 +140,10 @@ def get_model_classes(db, app):
         plugin_name = Column(Text())
         users = relationship('User', secondary=groups_users,
                              backref=backref('groups', lazy='dynamic'))
+        roles = relationship('Role', secondary=roles_groups,
+                             backref=backref('groups', lazy='dynamic'))
+        permissions = relationship('Permission', secondary=permissions_groups,
+                                   backref=backref('groups', lazy='dynamic'))
 
     class User(Base, UserMixin):
         """
@@ -160,22 +194,33 @@ def get_model_classes(db, app):
 
             permission_access = False
 
-            # Check single permissions
-            for permission in self.permissions:
+            # Collect permissions
+            #####################
+            all_permissions = self.permissions
+
+            # Add role permissions
+            for role in self.roles:
+                for permission in role.permissions:
+                    if permission not in all_permissions:
+                        all_permissions.append(permission)
+
+            for group in self.groups:
+                # Add direct group permissions
+                for permission in group.permissions:
+                    if permission not in all_permissions:
+                        all_permissions.append(permission)
+                # Add group permission given by roles
+                for role in group.roles:
+                    for permission in role.permissions:
+                        if permission not in all_permissions:
+                            all_permissions.append(permission)
+
+            # Check permissions
+            ###################
+            for permission in all_permissions:
                 if permission_name == permission.name:
                     permission_access = True
                     break
-
-            # Check permission by roles
-            if permission_access is not True:
-                for role in self.roles:
-                    if permission_access is True:
-                            break
-                    else:
-                        for permission in role.permissions:
-                            if permission_name == permission.name:
-                                permission_access = True
-                                break
 
             if permission_name not in app.permissions._permissions.keys():
                 raise PermissionException("Permission %s does not exist" % permission_name)

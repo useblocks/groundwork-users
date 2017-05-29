@@ -8,7 +8,7 @@ APP_STRICT = True
 
 APP_PATH = os.path.dirname(__file__)
 
-LOAD_PLUGINS = ["GwUsersWebManager", "GwWebManager"]
+LOAD_PLUGINS = ["GwUsersWebManager", "GwWebManager", "GwWeb"]
 
 FLASK_DEBUG = False
 FLASK_TEMPLATES_AUTO_RELOAD = True

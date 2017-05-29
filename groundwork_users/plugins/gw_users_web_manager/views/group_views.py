@@ -16,11 +16,24 @@ class GroupViews:
             """
         form = get_group_form(self.plugin)()
         form.users.query = self.plugin.user_model.query.filter()
+        form.roles.query = self.plugin.role_model.query.filter()
+        form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 
         if form.validate_on_submit():
+            # For the given permission names we need to find out the permission database objects and set them as
+            # the permissions for the user
+            permissions_db = []
+            for perm in form.permissions.data:
+                perm_db = self.plugin.app.permissions.users_db.query(self.plugin.app.permissions.Permission).filter_by(
+                    name=perm).first()
+                if perm_db is not None:
+                    permissions_db.append(perm_db)
+
             group_object = self.plugin.groups.register(name=form.name.data,
                                                        description=form.description.data,
-                                                       users=form.users.data)
+                                                       users=form.users.data,
+                                                       permissions=permissions_db,
+                                                       roles=form.roles.data)
 
             flash(_("Successfully added group %s" % group_object.name), "info")
             return redirect(url_for('.overview'))
@@ -54,16 +67,31 @@ class GroupViews:
 
         form = get_group_form(self.plugin)()
         form.users.query = self.plugin.user_model.query.filter()
+        form.roles.query = self.plugin.role_model.query.filter()
+        form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 
         if request.method == 'GET':
             form.name.data = group.name
             form.description.data = group.description
             form.users.data = group.users
+            form.permissions.data = [a.name for a in group.permissions]
+            form.roles.data = group.roles
 
         if form.validate_on_submit():
+            # For the given permission names we need to find out the permission database objects and set them as
+            # the permissions for the user
+            permissions_db = []
+            for perm in form.permissions.data:
+                perm_db = self.plugin.app.permissions.users_db.query(self.plugin.app.permissions.Permission).filter_by(
+                    name=perm).first()
+                if perm_db is not None:
+                    permissions_db.append(perm_db)
+
             group.name = form.name.data
             group.description = form.description.data
             group.users = form.users.data
+            group.permissions = permissions_db
+            group.roles = form.roles.data
 
             self.plugin.users_db.commit()
             flash(_("Successfully edit group %s" % group.name), "info")

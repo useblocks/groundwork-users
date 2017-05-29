@@ -26,6 +26,11 @@ class UserViews:
             # For the given permission names we need to find out the permission database objects and set them as
             # the permissions for the user
             permissions_db = []
+            for perm in form.permissions.data:
+                perm_db = self.plugin.app.permissions.users_db.query(self.plugin.app.permissions.Permission).filter_by(
+                    name=perm).first()
+                if perm_db is not None:
+                    permissions_db.append(perm_db)
 
             self.plugin.users.register(user_name=form.user_name.data,
                                        password=form.password.data,

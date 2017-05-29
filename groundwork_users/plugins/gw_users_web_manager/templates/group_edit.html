@@ -9,6 +9,8 @@
             {{ user_macros.render_bootstrap_field(form.name) }}
             {{ user_macros.render_bootstrap_field(form.description) }}
             {{ user_macros.render_bootstrap_field(form.users) }}
+            {{ user_macros.render_bootstrap_field(form.permissions) }}
+            {{ user_macros.render_bootstrap_field(form.roles) }}
             <button type="add" name="add" class="btn btn-primary">{{_('Edit')}}</button>
             <a href="{{url_for('.overview')}}" class="btn btn-default">{{_('Cancel')}}</a>
         </form>

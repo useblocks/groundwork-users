@@ -36,3 +36,17 @@ def test_groups_delete(users_web_manager):
 
     groups = users_web_manager.groups.get()
     assert len(groups) == 0
+
+
+def test_groups_permissions(users_web_manager):
+    permission = users_web_manager.permissions.register("test_permission")
+    permission_2 = users_web_manager.permissions.register("test_permission_2")
+    permission4role = users_web_manager.permissions.register("test_permission4role")
+    role = users_web_manager.roles.register("test_role", "my role desc", permissions=[permission4role])
+    user = users_web_manager.users.register("me", "me@me.com", "me-pw")
+    group = users_web_manager.groups.register("test_group", users=[user], permissions=[permission],
+                                              roles=[role])
+
+    assert user.has_permission(permission.name)
+    assert user.has_permission(permission4role.name)
+    assert user.has_permission(permission_2.name) is False

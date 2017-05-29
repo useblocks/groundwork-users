@@ -31,6 +31,39 @@
             </ul>
         </td>
     </tr>
+    <tr>
+        <td><strong>{{_('Roles')}}</strong></td>
+        <td>
+            <ul>
+                {%  for r in group.roles %}
+                <li><a href="{{url_for('role.detail', role_name=r.name)}}">{{ r.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Permissions')}}</strong></td>
+        <td>
+            <ul>
+                {%  for p in group.permissions %}
+                <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>{{_('Permissions by roles')}}</strong></td>
+        <td>
+            {%  for role in group.roles -%}
+            <b><a href="{{url_for('role.detail', role_name=role.name)}}">{{ role.name }}</a></b>
+            <ul>
+                {%  for p in role.permissions -%}
+                <li><a href="{{url_for('permission.detail', permission_name=p.name)}}">{{p.name}}</a></li>
+                {% endfor -%}
+            </ul>
+            {% endfor -%}
+        </td>
+    </tr>
 </table>
     </div>
 </div>
