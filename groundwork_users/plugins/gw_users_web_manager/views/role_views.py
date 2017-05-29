@@ -60,16 +60,21 @@ class RoleViews:
 
         form = get_role_form(self.plugin)()
         form.users.query = self.plugin.user_model.query.filter()
+        form.permissions.query = self.plugin.permission_model.query.filter()
+
+        form.name.validators = []
 
         if request.method == 'GET':
             form.name.data = role.name
-            form.contact.data = role.contact
+            form.description.data = role.description
             form.users.data = role.users
+            form.permissions.data = role.permissions
 
         if form.validate_on_submit():
             role.name = form.name.data
-            role.contact = form.contact.data
+            role.description = form.description.data
             role.users = form.users.data
+            role.permissions = form.permissions.data
 
             self.plugin.users_db.commit()
             flash(_("Successfully edit role %s" % role.name), "info")

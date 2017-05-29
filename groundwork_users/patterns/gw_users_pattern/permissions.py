@@ -1,3 +1,6 @@
+from groundwork_users.patterns.gw_users_pattern.users import UserDoesNotExistException
+
+
 class PermissionsPlugin:
     def __init__(self, plugin):
         self.plugin = plugin
@@ -13,6 +16,9 @@ class PermissionsPlugin:
 
     def get_from_db(self, permission_name=None):
         return self.app.permissions.get_from_db(permission_name, plugin=self.plugin)
+
+    def check(self, permission_name, user_name, **kwargs):
+        return self.app.permissions.check(permission_name, user_name, plugin=self.plugin, **kwargs)
 
 
 class PermissionsApplication:
@@ -85,6 +91,17 @@ class PermissionsApplication:
         return permission
 
     def get_from_db(self, permission_name=None, plugin=None, **kwargs):
+        """
+        This function returns all found permissions, which were stored inside the db.
+        The database may store "outdated" permissions, as a plugin with registered permissions may not be available
+        anymore. But we need to keep the mapping of user <-> permission for the case the plugin gets reactivated.
+
+        :param permission_name: Name of the permission
+        :param plugin: Plugin, which has registerd the permission (optional, if not given all permission will be searched.)
+        :param kwargs: Additional arguments for the search
+
+        :return: List of found permissions.
+        """
         if permission_name is not None:
             kwargs["name"] = permission_name
 
@@ -93,6 +110,30 @@ class PermissionsApplication:
         else:
             permission = self.users_db.query(self.Permission).filter_by(**kwargs, plugin_name=plugin.name).all()
         return permission
+
+    def check(self, permission_name, user_name, plugin=None, **kwargs):
+        """
+        Checks if a given user has the given permission.
+
+         If user or permission does not exist, PermissionDoesNotExistException or UserDoesNotExistException is raised.
+
+        :param permission_name: Name of the permission
+        :param user_name: Name of the user
+        :param **kwargs: Additional key-word arguments, which are used as input arguments for user.has_permission()
+        :return: True/False
+        """
+
+        user = self.app.users.get(user_name)
+        if len(user) == 0:
+            raise UserDoesNotExistException
+        else:
+            user = user[0]
+
+        permission = self.get_registered(permission_name, plugin)
+        if permission is None:
+            raise PermissionDoesNotExistException
+
+        return user.has_permission(permission_name, **kwargs)
 
 
 class Permission:

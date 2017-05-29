@@ -1,5 +1,6 @@
 import os
 
+from flask_login import current_user
 
 from groundwork_web.patterns import GwWebPattern
 
@@ -10,6 +11,27 @@ from groundwork_users.plugins.gw_users_web_manager.views.apikey_views import Api
 from groundwork_users.plugins.gw_users_web_manager.views.group_views import GroupViews
 from groundwork_users.plugins.gw_users_web_manager.views.permission_views import PermissionViews
 from groundwork_users.plugins.gw_users_web_manager.views.role_views import RoleViews
+
+
+def belongs_current_user(permission_name, user_name=None, **kwargs):
+    """
+    Checks if the user-strings (which is unique in the system) belongs to the current user.
+    Great to check, if an object (user, node, ...) belongs to current user
+
+    :param user_name: user-string
+    :param permission_name: name of the permission
+    :return: True, if user-string belongs to current user. Else False.
+    """
+    if user_name is None:
+        return True
+
+    if current_user.user_name == user_name:
+        return True
+    return False
+
+
+conf_belongs_current_user = {"func": belongs_current_user,
+                             "params": {"user_name": "Name of the user, which belongs the secured object"}}
 
 
 class GwUsersWebManager(GwUsersPattern, GwWebPattern):
@@ -24,6 +46,7 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.apikey_model = None
         self.group_model = None
         self._user_menu = None
+        self._login_menu = None
         self._base_dir = os.path.dirname(__file__)
         self._template_folder = os.path.join(self._base_dir, "templates")
         self._static_folder = os.path.join(self._base_dir, "static")
@@ -38,6 +61,7 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.group_model = self.users_db.classes.get("Group")
 
         self._user_menu = self.web.menus.register("User Manager", "/user/")
+        self._login_menu = self.web.menus.register("Login", "bla", link_text="test_me", func=self._login_menu_view)
 
         self.activate_user()
         self.activate_domain()
@@ -45,6 +69,9 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.activate_group()
         self.activate_permission()
         self.activate_role()
+
+    def _login_menu_view(self):
+        return self.web.render("user_button.html")
 
     def activate_user(self):
         views = UserViews(self)
@@ -74,6 +101,20 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.web.routes.register("/delete/<user_name>", ["GET"], endpoint=views.delete,
                                  name="view_user_delete",
                                  context=context.name, description="Deletes an user")
+
+        # Permission registration
+        self.permissions.register("user_view_all", description="User is allowed to view ALL user profiles")
+        self.permissions.register("user_edit_all", description="User is allowed to edit ALL user profiles ")
+        self.permissions.register("user_delete_all", description="User is allowed to delete ANY user")
+
+        self.permissions.register("user_view_own", description="User is allowed to view OWN user profile",
+                                  **conf_belongs_current_user)
+        self.permissions.register("user_edit_own", description="User is allowed to edit OWN user profile",
+                                  **conf_belongs_current_user)
+        self.permissions.register("user_delete_own", description="User is allowed to delete OWN user",
+                                  **conf_belongs_current_user)
+
+        self.permissions.register("user_create", description="User is allowed to create new users")
 
     def activate_domain(self):
         views = DomainViews(self)
@@ -182,7 +223,7 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.web.routes.register("/<permission_name>", ["GET"], endpoint=views.detail,
                                  name="view_permission_detail",
                                  context=context.name, description="Shows details of a permission")
-        
+
     def activate_role(self):
         views = RoleViews(self)
         prefix_url = "/role"
@@ -215,4 +256,3 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
 
     def deactivate(self):
         pass
-

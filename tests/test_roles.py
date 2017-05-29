@@ -25,18 +25,18 @@ def test_roles_get(users_web_manager):
     user = users_web_manager.users.register("me", "me@me.com", "me-pw")
     role_1 = users_web_manager.roles.register("test_role", users=[user])
     roles = users_web_manager.roles.get()
-    assert len(roles) == 1
-    assert role_1 == roles[0]
+    assert len(roles) == 2
+    assert role_1 == roles[1]
 
 
 def test_roles_delete(users_web_manager):
     user = users_web_manager.users.register("me", "me@me.com", "me-pw")
     role_1 = users_web_manager.roles.register("test_role", users=[user])
     roles = users_web_manager.roles.get()
-    assert len(roles) == 1
+    assert len(roles) == 2
 
     users_web_manager.roles.delete(role_1.name)
 
     roles = users_web_manager.roles.get()
-    assert len(roles) == 0
+    assert len(roles) == 1
 

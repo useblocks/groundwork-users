@@ -33,11 +33,11 @@ def test_users_get(users_web_manager):
 def test_users_delete(users_web_manager):
     user = users_web_manager.users.register("test_user", "user@test.com", "my_password")
     users = users_web_manager.users.get()
-    assert len(users) == 1
+    assert len(users) == 2
 
     users_web_manager.users.delete(user.user_name)
     users = users_web_manager.users.get()
-    assert len(users) == 0
+    assert len(users) == 1
 
 
 def test_users_apikey_delete(users_web_manager):
@@ -45,13 +45,13 @@ def test_users_apikey_delete(users_web_manager):
     users_web_manager.apikeys.register("test_apikey", user=user)
 
     users = users_web_manager.users.get()
-    assert len(users) == 1
+    assert len(users) == 2
     apikeys = users_web_manager.apikeys.get()
     assert len(apikeys) == 1
 
     users_web_manager.users.delete(user.user_name)
 
     users = users_web_manager.users.get()
-    assert len(users) == 0
+    assert len(users) == 1
     apikeys = users_web_manager.apikeys.get()
     assert len(apikeys) == 0

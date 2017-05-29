@@ -98,7 +98,7 @@ class UserViews:
             user.permissions = permissions_db
 
             if form.password.data:
-                user.password_hash = encrypt_password(form.password.data)
+                user.password = encrypt_password(form.password.data)
 
             user.full_name = form.full_name.data
             user.page = form.page.data

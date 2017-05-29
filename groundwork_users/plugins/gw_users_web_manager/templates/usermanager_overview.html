@@ -2,8 +2,10 @@
 {% block content %}
 <h1>{{_('User List')}}</h1>
 <p>
+    {% if current_user.has_permission("user_create") %}
     <a class="btn btn-default" href="{{url_for('.add')}}">
         {{_("Create a new user")}}</a>
+    {% endif %}
 </p>
 <table id="overview-table"class="table table-striped">
     <thead>

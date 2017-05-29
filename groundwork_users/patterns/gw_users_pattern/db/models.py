@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship, backref
 from flask_security import UserMixin, RoleMixin
 
 
-def get_model_classes(db):
+def get_model_classes(db, app):
     Base = db.Base
     metadata = Base.metadata
 
@@ -126,7 +126,7 @@ def get_model_classes(db):
         id = Column(Integer, primary_key=True)
         email = Column(Text(255), unique=True)
         full_name = Column(Text(255))
-        password_hash = Column(Text(255))
+        password = Column(Text(255))
         user_name = Column(Text(255), unique=True)
         domain = Column(Text(255))
         description = Column(Text(2048))
@@ -148,54 +148,49 @@ def get_model_classes(db):
 
         # ToDo: Reactivate function with new class layout
 
-        # def has_permission(self, permission_name, **kwargs):
-        #     """
-        #     Checks, if the user has a given permission (by role or by a direct link to a permission).
-        #
-        #     :param permission_name: Name of the permission
-        #     :return: True, if user has permission. Else False.
-        #     """
-        #     # TODO: This should be mapped to permission object, so that "perm in user.permissions" would work
-        #     # TODO: Now we search for a string, which is not so high-performance
-        #
-        #     permission_access = False
-        #
-        #     # Check single permissions
-        #     for permission in self.permissions:
-        #         if permission_name == permission.name:
-        #             permission_access = True
-        #             break
-        #         if permission.name == "is_superadmin":
-        #             return True
-        #
-        #     # Check permission by roles
-        #     if permission_access is not True:
-        #         for role in self.roles:
-        #             if permission_access is True:
-        #                     break
-        #             else:
-        #                 for permission in role.permissions:
-        #                     if permission_name == permission.name:
-        #                         permission_access = True
-        #                         break
-        #                     if permission.name == "is_superadmin":
-        #                         return True
-        #
-        #     plugin_manager = groundwork.core.glob.plugin_manager()
-        #     if permission_name not in plugin_manager.shared_objects["Permissions"]["shared_object"].keys():
-        #         raise PermissionException("Permission %s does not exist" % permission_name)
-        #
-        #     if not permission_access:
-        #         return False
-        #     # right now, we only know that the user has the needed permission string.
-        #     # But we need to execute the related permission function, if one was set
-        #     permission = plugin_manager.shared_objects["Permissions"]["shared_object"][permission_name]
-        #
-        #     # If no extra function for permissions tests is given, the permission check is true
-        #     if permission["func"] is None:
-        #         return True
-        #
-        #     return plugin_manager.shared_objects["Permissions"]["shared_object"][permission_name]["func"](permission_name, **kwargs)
+        def has_permission(self, permission_name, *args, **kwargs):
+            """
+            Checks, if the user has a given permission (by role or by a direct link to a permission).
+
+            :param permission_name: Name of the permission
+            :return: True, if user has permission. Else False.
+            """
+            # TODO: This should be mapped to permission object, so that "perm in user.permissions" would work
+            # TODO: Now we search for a string, which is not so high-performance
+
+            permission_access = False
+
+            # Check single permissions
+            for permission in self.permissions:
+                if permission_name == permission.name:
+                    permission_access = True
+                    break
+
+            # Check permission by roles
+            if permission_access is not True:
+                for role in self.roles:
+                    if permission_access is True:
+                            break
+                    else:
+                        for permission in role.permissions:
+                            if permission_name == permission.name:
+                                permission_access = True
+                                break
+
+            if permission_name not in app.permissions._permissions.keys():
+                raise PermissionException("Permission %s does not exist" % permission_name)
+
+            if not permission_access:
+                return False
+            # right now, we only know that the user has the needed permission string.
+            # But we need to execute the related permission function, if one was set
+            permission = app.permissions._permissions[permission_name]
+
+            # If no extra function for permissions tests is given, the permission check is true
+            if permission.func is None:
+                return True
+
+            return app.permissions._permissions[permission_name].func(permission_name, *args, **kwargs)
 
     class Apikey(Base):
         """

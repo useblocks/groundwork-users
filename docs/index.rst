@@ -36,3 +36,9 @@ It provides the following functions:
 * Assign roles to users/groups
 * Assign single permission to users/groups
 * Secure functions with needed permissions
+
+.. toctree::
+   :maxdepth: 2
+
+   jinja
+   configuration

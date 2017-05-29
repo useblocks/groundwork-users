@@ -36,8 +36,11 @@ class UsersApplication:
         if plugin is None:
             raise ValueError("plugin must not be None")
 
-        with self.app.web.flask.app_context():
-            password_hash = encrypt_password(password)
+        if password is not None and len(password) > 0:
+            with self.app.web.flask.app_context():
+                password_hash = encrypt_password(password)
+        else:
+            password_hash = ""
 
         if plugin is None:
             plugin_name = None
@@ -53,7 +56,7 @@ class UsersApplication:
         if permissions is None:
             permissions = []
 
-        user = self.User(user_name=user_name, email=email, password_hash=password_hash,
+        user = self.User(user_name=user_name, email=email, password=password_hash,
                          full_name=full_name, plugin_name=plugin_name, domain=domain,
                          page=page, description=description, groups=groups,
                          roles=roles, permissions=permissions, confirmed_at=confirmed_at, active=active)

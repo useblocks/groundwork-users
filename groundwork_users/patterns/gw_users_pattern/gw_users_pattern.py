@@ -33,7 +33,7 @@ class GwUsersPattern(GwSqlPattern):
         if db_url is None or "":
             raise ValueError("USERS_DB_URL must not be None or empty")
         self.users_db = self.databases.register(db_name, db_url, db_description)
-        models = get_model_classes(self.users_db)  # User, Permission, Role, Apikey, Domain, Group
+        models = get_model_classes(self.users_db, self.app)  # User, Permission, Role, Apikey, Domain, Group
 
         for model in models:
             self.users_db.classes.register(model)
@@ -81,10 +81,66 @@ class GwUsersPattern(GwSqlPattern):
                              description="Cares about the correct configuration of flask security for GwUsers",
                              sender=self)
 
+        self.anonymous_name = "anonymous"
+        self.anonymous_role = None
+        self.anonymous_user = None
+
     def configure_web_security(self, plugin, *args, **kwargs):
         # Flask-Security configuration
         User = self.users_db.classes.get("User")
         Role = self.users_db.classes.get("Role")
         user_datastore = SQLAlchemyUserDatastore(self.users_db, User, Role)
-        self.flask_security = Security(self.app.web.flask, user_datastore)
 
+        # The following configuration is needed to provide the flask-security
+        # extension the correct location of our custom templates for login,
+        # password reset, ...
+        self.app.web.flask.config[
+            "SECURITY_FORGOT_PASSWORD_TEMPLATE"] = "forms/forgot_password.html"
+        self.app.web.flask.config[
+            "SECURITY_LOGIN_USER_TEMPLATE"] = "forms/login_user.html"
+        self.app.web.flask.config[
+            "SECURITY_REGISTER_USER_TEMPLATE"] = "forms/register_user.html"
+        self.app.web.flask.config[
+            "SECURITY_RESET_PASSWORD_TEMPLATE"] = "forms/reset_password.html"
+        self.app.web.flask.config[
+            "SECURITY_SEND_CONFIRMATION_TEMPLATE"] = "forms/send_confirmation.html"
+
+        # Specify the correct urls for login, register, ...
+        self.app.web.flask.config["SECURITY_LOGIN_URL"] = "/login"
+        self.app.web.flask.config["SECURITY_LOGOUT_URL"] = "/logout"
+        self.app.web.flask.config[
+            "SECURITY_REGISTER_URL"] = "/register"
+
+        # Activate the needed flask-security features by setting the correct
+        # flags
+        self.app.web.flask.config["SECURITY_TRACKABLE"] = True
+
+        self.anonymous_role = self.roles.register("Anonymous", "special role for anonymous accounts")
+        self.anonymous_user = self.users.register("anonymous", "none@email.com", "",
+                                                  full_name="Anonymous", roles=[self.anonymous_role])
+
+        class AnonymousUser(User):
+            """
+            Anonymous user class for flask security/login.
+            Security extension initiates this class by itself during start up.
+            So every parameter we set here will become fix during runtime.
+            This means, we can not reconfigure the anonymous user.
+            So every permission the user gets, must be already set in db during start up.
+            --> Restart app, if you changed anonymous permissions in DB!
+            """
+            # TODO: Using self inside this class def is really ugly. self means here the plugin class, not
+            # TODO: the anonymous user class.
+            flask = self.web.flask
+            is_authenticated = False
+            is_anonymous = True
+            anonymous_name = self.anonymous_name
+            anonymous_user = self.users.get(anonymous_name)
+
+            # def __init__(self):
+            #     if self.anonymous_name is not None:
+            #         with self.flask.app_context():
+            #             self.anonymous = self.users.get("anonymous")
+            #             if self.anonymous is not None:
+            #                 self.permissions = self.anonymous.permissions
+
+        self.flask_security = Security(self.app.web.flask, user_datastore, anonymous_user=AnonymousUser)
