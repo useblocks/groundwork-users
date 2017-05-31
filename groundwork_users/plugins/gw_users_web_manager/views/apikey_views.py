@@ -39,17 +39,17 @@ class ApiKeyViews():
         try:
             apikey = self.plugin.app.apikeys.get(apikey)[0]
             return self.plugin.web.render("apikey_detail.html", apikey=apikey)
-        except IndexError as e:
+        except IndexError:
             self.plugin.log.debug("Apikey does not exist: {0}".format(apikey))
             abort(404)
-        except Exception as e:
+        except Exception:
             self.plugin.log.warning("Apikey deletion hasn't  worked: {0}".format(apikey))
             abort(500)
 
     def delete(self, apikey):
         try:
             self.plugin.app.apikeys.delete(apikey)
-        except ApikeyDoesNotExistException as e:
+        except ApikeyDoesNotExistException:
             abort(404)
 
         flash(_("Successfully deleted API key %s" % apikey), "info")

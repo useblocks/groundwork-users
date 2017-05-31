@@ -129,7 +129,7 @@ class UserViews:
     def delete(self, user_name):
         try:
             self.plugin.app.users.delete(user_name)
-        except UserDoesNotExistException as e:
+        except UserDoesNotExistException:
             self.plugin.log.debug("User {0} does not exist".format(user_name))
             abort(404)
 

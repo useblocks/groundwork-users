@@ -14,6 +14,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from __future__ import print_function
 import os
 import sys
 import pkg_resources
