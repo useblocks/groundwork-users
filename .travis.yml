@@ -13,10 +13,10 @@ install:
 script: tox
 deploy:
   provider: pypi
-  distributions: sdist bdist_wheel
   user: danwos
   password:
-    secure: no_hash_yet
+    secure: TqIeA3nDtjlfPnonLt3p6+SAX/TmTX9tMNlJxk7NKpLhvcA4WkBk0SSqzt7/8BOewyqjl8IfiHEYs96gJ9OPkiviYLpW+8VaMTiUjHZs+i+/07HJE2VKqZR3jXVt3nQB44xK1y6Lte3+8Yh32aKTt7lEk2wtQA5sP6czf22NjixsM08UWLKM3E9kzCzJxVD0fumX3b95isxqvBonMTbCWSeFHwgCslvuBKIgCG1ujriYDlcTqRGU/Ue9yLDVt9TaeOCfKiAdjevK7lLkicOmA9brUdCmCcCkEaxtamquIOJ/85vcp/pB0jt65TdUbV81a6+eTSvu6GUCUOokJQACbog+9u8aJUyWS7nXLDmA72aBM3V8YqlGpRWiRL4xmXGfQp7N1/6cW0qTnjcgZr+wr02b8FlZhMHtQp/VoQE3eV+ygX6HpFbf1I7OszHImnGZAG2so7NiFIJHhtEi+6QuViRjDlPQfik3VZvjJzBwPqUwPs8a/NuU7A+IPzU4Rvn5AhivYtcdseH8bR+Heaql+20MW9zEagMaJ2A2ap1o1bDsFrQu5MPfMQcRYiaMV502Lb3RNK6Wonp+Tr1nm0L6CcooF5ouUGbcNRgx/MYQJXhQrwfS1m+EfCGEqKOlRE55909ob/OZZp6ofjr12Xcj6K9ZAl5ep9qJp4yx8oJHjqM=
   on:
     tags: true
-    branch: master
+    distributions: sdist bdist_wheel
+    repo: useblocks/groundwork-users
