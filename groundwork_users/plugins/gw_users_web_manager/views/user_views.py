@@ -1,5 +1,10 @@
 from flask import flash, redirect, url_for, request, abort
-from flask_babel import _
+
+try:
+    from flask_babel import _
+except ImportError:
+    from flask.ext.babel import _
+
 from flask_security.utils import encrypt_password
 
 from groundwork_users.patterns.gw_users_pattern.users import UserDoesNotExistException

@@ -1,6 +1,3 @@
-from datetime import datetime
-
-
 class RolesPlugin:
     def __init__(self, plugin):
         self.plugin = plugin
@@ -53,7 +50,8 @@ class RolesApplication:
         if plugin is None:
             roles = self.users_db.query(self.Role).filter_by(**kwargs).all()
         else:
-            roles = self.users_db.query(self.Role).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            roles = self.users_db.query(self.Role).filter_by(**kwargs).all()
 
         return roles
 

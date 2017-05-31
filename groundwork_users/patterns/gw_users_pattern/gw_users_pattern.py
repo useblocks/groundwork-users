@@ -22,7 +22,7 @@ class GwUsersPattern(GwSqlPattern):
         except AttributeError:
             self.needed_plugins = ["GwWeb"]
 
-        super().__init__(app, *args, **kwargs)
+        super(GwUsersPattern, self).__init__(app, *args, **kwargs)
 
         ###############################################################
         # Database configuration

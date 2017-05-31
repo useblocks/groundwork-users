@@ -36,4 +36,3 @@ def test_domains_delete(users_web_manager):
 
     domains = users_web_manager.domains.get()
     assert len(domains) == 0
-

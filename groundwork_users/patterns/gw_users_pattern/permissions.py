@@ -97,7 +97,8 @@ class PermissionsApplication:
         anymore. But we need to keep the mapping of user <-> permission for the case the plugin gets reactivated.
 
         :param permission_name: Name of the permission
-        :param plugin: Plugin, which has registerd the permission (optional, if not given all permission will be searched.)
+        :param plugin: Plugin, which has registerd the permission
+                       (optional, if not given all permission will be searched.)
         :param kwargs: Additional arguments for the search
 
         :return: List of found permissions.
@@ -108,7 +109,8 @@ class PermissionsApplication:
         if plugin is None:
             permission = self.users_db.query(self.Permission).filter_by(**kwargs).all()
         else:
-            permission = self.users_db.query(self.Permission).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            permission = self.users_db.query(self.Permission).filter_by(**kwargs).all()
         return permission
 
     def check(self, permission_name, user_name, plugin=None, **kwargs):

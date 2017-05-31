@@ -13,9 +13,9 @@ def get_user_form(plugin):
                 raise ValidationError(msg)
 
         user_name = StringField(
-                _('User name'),
-                [Required(), unique_user]
-            )
+            _('User name'),
+            [Required(), unique_user]
+        )
 
         full_name = StringField(
             _('Full name'),

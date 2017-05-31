@@ -53,7 +53,8 @@ class GroupsApplication:
         if plugin is None:
             group = self.users_db.query(self.Group).filter_by(**kwargs).all()
         else:
-            group = self.users_db.query(self.Group).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            group = self.users_db.query(self.Group).filter_by(**kwargs).all()
         return group
 
     def delete(self, group_name, plugin=None):

@@ -8,15 +8,15 @@ def start_app():
     app.plugins.activate(app.config.get("LOAD_PLUGINS"))
 
     # Permission registration
-    permission_1 = app.permissions.register("permission_no_func", plugin=app)
-    permission_2 = app.permissions.register("permission_with_func", func=_permission_func, plugin=app)
+    app.permissions.register("permission_no_func", plugin=app)
+    app.permissions.register("permission_with_func", func=_permission_func, plugin=app)
 
     # Permission requests
     permissions = app.permissions.get_from_db()
     permissions_own = [a for a in permissions if "own" in a.name]
 
     # User registration
-    me = app.users.register("me", "me@me.com", "me_pw", full_name="Me Me_Name", plugin=app)
+    app.users.register("me", "me@me.com", "me_pw", full_name="Me Me_Name", plugin=app)
     daniel = app.users.register("daniel", "dw@useblocks.com", "dw_pw", full_name="Daniel Woste", plugin=app)
     marco = app.users.register("marco", "mh@useblocks.com", "mh_pw", full_name="Marco Heinemann", plugin=app)
 
@@ -46,6 +46,7 @@ def start_app():
 
 def _permission_func(**kargs):
     return True
+
 
 if "main" in __name__:
     start_app()

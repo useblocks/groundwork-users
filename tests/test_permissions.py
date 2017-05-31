@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_permissions_api(users_web_manager):
     assert hasattr(users_web_manager, "permissions")
     assert hasattr(users_web_manager.permissions, "register")

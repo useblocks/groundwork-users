@@ -48,4 +48,3 @@ def app_configs(app_path, conf_source):
 
     configs = [final_config_path]
     return configs
-

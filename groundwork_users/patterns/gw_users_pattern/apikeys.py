@@ -53,7 +53,8 @@ class ApikeysApplication:
         if plugin is None:
             apikeys = self.users_db.query(self.Apikey).filter_by(**kwargs).all()
         else:
-            apikeys = self.users_db.query(self.Apikey).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            apikeys = self.users_db.query(self.Apikey).filter_by(**kwargs).all()
 
         return apikeys
 

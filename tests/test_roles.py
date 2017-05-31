@@ -39,4 +39,3 @@ def test_roles_delete(users_web_manager):
 
     roles = users_web_manager.roles.get()
     assert len(roles) == 1
-

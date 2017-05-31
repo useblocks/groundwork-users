@@ -1,6 +1,6 @@
 from flask_babel import _
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, ValidationError, BooleanField
+from wtforms import StringField, ValidationError, BooleanField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired
 

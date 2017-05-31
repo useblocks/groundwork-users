@@ -44,8 +44,7 @@ def test_groups_permissions(users_web_manager):
     permission4role = users_web_manager.permissions.register("test_permission4role")
     role = users_web_manager.roles.register("test_role", "my role desc", permissions=[permission4role])
     user = users_web_manager.users.register("me", "me@me.com", "me-pw")
-    group = users_web_manager.groups.register("test_group", users=[user], permissions=[permission],
-                                              roles=[role])
+    users_web_manager.groups.register("test_group", users=[user], permissions=[permission], roles=[role])
 
     assert user.has_permission(permission.name)
     assert user.has_permission(permission4role.name)

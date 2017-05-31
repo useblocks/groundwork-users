@@ -53,7 +53,8 @@ class DomainsApplication:
         if plugin is None:
             domains = self.users_db.query(self.Domain).filter_by(**kwargs).all()
         else:
-            domains = self.users_db.query(self.Domain).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            domains = self.users_db.query(self.Domain).filter_by(**kwargs).all()
 
         return domains
 

@@ -15,7 +15,7 @@ class UsersPlugin:
     def get(self, user_name=None, **kwargs):
         return self.app.users.get(user_name=user_name, plugin=self.plugin, **kwargs)
 
-    def delete(self,user_name):
+    def delete(self, user_name):
         return self.app.users.delete(user_name=user_name, plugin=self.plugin)
 
 
@@ -84,7 +84,8 @@ class UsersApplication:
         if plugin is None:
             users = self.users_db.query(self.User).filter_by(**kwargs).all()
         else:
-            users = self.users_db.query(self.User).filter_by(**kwargs, plugin_name=plugin.name).all()
+            kwargs["plugin_name"] = plugin.name
+            users = self.users_db.query(self.User).filter_by(**kwargs).all()
 
         return users
 

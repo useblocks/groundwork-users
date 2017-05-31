@@ -37,7 +37,7 @@ conf_belongs_current_user = {"func": belongs_current_user,
 class GwUsersWebManager(GwUsersPattern, GwWebPattern):
     def __init__(self, app, *args, **kwargs):
         self.name = self.__class__.__name__
-        super().__init__(app, *args, **kwargs)
+        super(GwUsersWebManager, self).__init__(app, *args, **kwargs)
         self.users_db = None
         self.user_model = None
         self.permission_model = None
