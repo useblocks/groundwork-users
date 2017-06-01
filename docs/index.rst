@@ -33,7 +33,7 @@ This is a `groundwork`_ extension package for managing users and related functio
    :show_caption: True
    :title:
 
-   User profile view of the plugin :ref:`users_web_manager`.
+   User profile view
 
 More images are shown on the :ref:`screenshots` page.
 
