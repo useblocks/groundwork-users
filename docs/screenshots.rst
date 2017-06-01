@@ -10,6 +10,7 @@ Login
 
 .. thumbnail:: _images/web_login.png
    :width: 45%
+   :group: screenshot
 
    Login screen
 
