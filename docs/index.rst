@@ -29,6 +29,7 @@ groundwork-users
 This is a `groundwork`_ extension package for managing users and related functions.
 
 .. thumbnail:: _images/web_user_example.png
+   :group: screenshot
    :show_caption: True
    :title:
 
@@ -61,7 +62,7 @@ All of the following functions are available as API via :ref:`users_pattern` or 
 
 * Create, edit and delete permissions
 * Create, edit and delete roles
-* Bundle pPermissions inside roles
+* Bundle permissions inside roles
 * Assign roles to users/groups
 * Assign single permission to users/groups
 * Secure functions/views with needed permissions
@@ -80,7 +81,7 @@ All of the following functions are available as API via :ref:`users_pattern` or 
 **Domains**
 
 * Create, edit and delete domains
-* Bundle users to domains for multi-client-support
+* Bundle users to domains for multi-client-support (`Multitenancy <https://en.wikipedia.org/wiki/Multitenancy>`_)
 
 
 
