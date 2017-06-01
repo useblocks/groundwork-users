@@ -2,3 +2,4 @@ gitpython
 sphinx
 sphinxcontrib-plantuml
 sphinxcontrib-needs
+sphinxcontrib-images
