@@ -1,0 +1,12 @@
+global-exclude *.pyc
+
+global-include *.conf
+global-include *.html
+global-include *.css
+global-include *.js
+
+
+prune docs/_build
+prune docs/_themes
+
+
