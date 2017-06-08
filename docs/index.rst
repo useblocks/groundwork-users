@@ -98,10 +98,14 @@ Package content
 
  * GwUsersPattern
 
+Content
+-------
+
 .. toctree::
    :maxdepth: 2
 
    screenshots
+   users
    jinja
    configuration
    api

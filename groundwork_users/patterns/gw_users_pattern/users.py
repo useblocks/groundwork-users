@@ -6,6 +6,7 @@ class UsersPlugin:
         self.plugin = plugin
         self.app = plugin.app
         self.log = plugin.log
+        self.users_db = self.plugin.app.databases.get("users_db")
 
     def register(self, user_name, email, password, full_name="", page=None, description=None,
                  domain=None, groups=None, roles=None, permissions=None, confirmed_at=None, active=True):

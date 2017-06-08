@@ -162,7 +162,6 @@ def get_model_classes(db, app):
         full_name = Column(Text(255))
         password = Column(Text(255))
         user_name = Column(Text(255), unique=True)
-        domain = Column(Text(255))
         description = Column(Text(2048))
         page = Column(Text(255))
         plugin_name = Column(Text(255))
