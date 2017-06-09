@@ -1,5 +1,6 @@
 gitpython
-sphinx
+sphinx<=1.6
 sphinxcontrib-plantuml
 sphinxcontrib-needs
 sphinxcontrib-images
+groundwork-sphinx-theme

@@ -20,7 +20,6 @@ import sys
 import pkg_resources
 from datetime import datetime
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.append(os.path.abspath('_themes'))
 
 # -- General configuration ------------------------------------------------
 
@@ -36,8 +35,7 @@ extensions = [
     'sphinxcontrib.images'
 ]
 
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -132,40 +130,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'gw'
-if html_theme == 'gw':
-    # The gw theme can be found under: https://github.com/useblocks/gw-sphinx-themes
-    # The following codes tries to fetch the latest version before the build starts.
-    git_url = "https://github.com/useblocks/gw-sphinx-themes"
-    repo_dir = os.path.join(os.path.dirname(__file__), os.path.abspath("_themes"))
-    print("Getting latest version of groundwork sphinx theme")
-    try:
-        print("  Checking for gitpython library... ", end="")
-        from git import Repo
-        print("done")
-        print("  Checking for working internet connection... ", end="")
-        from urllib.request import urlopen
-        urlopen("http://google.com")
-        print("done")
-    except Exception:
-        if not os.path.exists(repo_dir) or os.listdir(repo_dir) == []:
-            print("Please install 'gitpython' to use the latest version of the groundwork"
-                  "sphinx theme or save it by your own under '_themes' by executing "
-                  "'git clone https://github.com/useblocks/gw-sphinx-themes")
-            sys.exit(1)
-        else:
-            print("gitpython is not installed, but _themes is no empty. So maybe there is"
-                  "a working copy of the groundwork sphinx themes. Lets go one.")
-
-    print("  Getting latest theme updates... ", end="")
-
-    if not os.path.exists(repo_dir):
-        Repo.clone_from(git_url, repo_dir)
-    else:
-        repo = Repo(repo_dir)
-        origin = repo.remotes.origin
-        origin.pull()
-    print("done")
+html_theme = 'groundwork'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -177,18 +142,6 @@ html_theme_options = {
     "github_ribbon_color": "white_ffffff",
     "github_user": "useblocks",
 }
-
-# Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['_themes']
-
-# The name for this set of Sphinx documents.
-# "<project> v<release> documentation" by default.
-#
-# html_title = 'groundwork-users v0.1'
-
-# A shorter title for the navigation bar.  Default is the same as html_title.
-#
-# html_short_title = None
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
