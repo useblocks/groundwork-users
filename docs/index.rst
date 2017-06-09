@@ -105,7 +105,9 @@ Content
    :maxdepth: 2
 
    screenshots
+   web_views
    users
+   groups
    jinja
    configuration
    api
