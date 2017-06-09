@@ -15,7 +15,6 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 from __future__ import print_function
-import os
 import sys
 import pkg_resources
 from datetime import datetime
@@ -34,8 +33,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.images'
 ]
-
-
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
