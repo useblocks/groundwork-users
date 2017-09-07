@@ -37,7 +37,6 @@ conf_belongs_current_user = {"func": belongs_current_user,
 class GwUsersWebManager(GwUsersPattern, GwWebPattern):
     def __init__(self, app, *args, **kwargs):
         self.name = self.__class__.__name__
-        super(GwUsersWebManager, self).__init__(app, *args, **kwargs)
         self.users_db = None
         self.user_model = None
         self.permission_model = None
@@ -47,6 +46,11 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
         self.group_model = None
         self._user_menu = None
         self._login_menu = None
+
+        # This needs to be called after we set needed vars to None, because
+        # the GwUsersPattern will overwrite some of them (e.g. self.users_db)
+        super(GwUsersWebManager, self).__init__(app, *args, **kwargs)
+
         self._base_dir = os.path.dirname(__file__)
         self._template_folder = os.path.join(self._base_dir, "templates")
         self._static_folder = os.path.join(self._base_dir, "static")

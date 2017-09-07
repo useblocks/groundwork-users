@@ -1,6 +1,7 @@
 from flask_security import Security, SQLAlchemyUserDatastore
 
 from groundwork_database.patterns import GwSqlPattern
+from groundwork_web.patterns import GwWebPattern
 
 from groundwork_users.patterns.gw_users_pattern.db.models import get_model_classes
 from groundwork_users.patterns.gw_users_pattern.users import UsersApplication, UsersPlugin
@@ -11,7 +12,7 @@ from groundwork_users.patterns.gw_users_pattern.domains import DomainsApplicatio
 from groundwork_users.patterns.gw_users_pattern.groups import GroupsApplication, GroupsPlugin
 
 
-class GwUsersPattern(GwSqlPattern):
+class GwUsersPattern(GwWebPattern, GwSqlPattern):
 
     def __init__(self, app, *args, **kwargs):
         db_name = "users_db"
@@ -76,7 +77,7 @@ class GwUsersPattern(GwSqlPattern):
 
         # Create a signal to configure flask-security after plugin activation.
         self.signals.connect(receiver="",
-                             signal="plugin_activate_post",
+                             signal="plugin_activate_pre",
                              function=self.configure_web_security,
                              description="Cares about the correct configuration of flask security for GwUsers",
                              sender=self)

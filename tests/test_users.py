@@ -1,3 +1,6 @@
+import os
+from tests.conftest import app_configs
+
 def test_users_api(users_web_manager):
     assert hasattr(users_web_manager, "users")
     assert hasattr(users_web_manager.users, "register")
@@ -15,6 +18,34 @@ def test_users_creation(users_web_manager):
     assert hasattr(user, "user_name")
     assert hasattr(user, "email")
     assert hasattr(user, "full_name")
+
+
+def test_creation_during_activation(app_path):
+    """
+    Tests the registration of users already during plugin activation
+
+    :param app_path:
+    :return:
+    """
+    from groundwork import App
+    from groundwork_users.patterns import GwUsersPattern
+
+    class MyUserPlugin(GwUsersPattern):
+        def __init__(self, app, *args, **kwargs):
+            self.name = "MyUserPlugin"
+            super(MyUserPlugin, self).__init__(app, *args, **kwargs)
+            self.my_user = None
+
+        def activate(self):
+            self.my_user = self.users.register("test_user_new", "user_new@test.com", "my_password_new")
+
+    configs = app_configs(app_path, os.path.join("configs", "web_app_conf.py"))
+    app = App(configs, strict=True)
+    user_manager = MyUserPlugin(app)
+    user_manager.activate()
+    assert hasattr(user_manager, "my_user")
+    assert user_manager.my_user is not None
+    assert hasattr(user_manager.my_user, "user_name")
 
 
 def test_users_get(users_web_manager):
@@ -55,3 +86,4 @@ def test_users_apikey_delete(users_web_manager):
     assert len(users) == 1
     apikeys = users_web_manager.apikeys.get()
     assert len(apikeys) == 0
+
