@@ -25,8 +25,8 @@ setup(
     platforms='any',
     setup_requires=[],
     tests_require=[],
-    install_requires=['groundwork-database>=0.1.3', 'flask-babel', 'flask-security',
-                      'groundwork-web>=0.1.3', 'groundwork>=0.1.10'],
+    install_requires=['groundwork-database>=0.1.3', 'flask-babel', 'flask-security', 'flask-login', 'bcrypt',
+                      'groundwork-web>=0.1.4', 'groundwork>=0.1.10'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',

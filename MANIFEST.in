@@ -4,6 +4,7 @@ global-include *.conf
 global-include *.html
 global-include *.css
 global-include *.js
+global-include *.db
 
 
 prune docs/_build

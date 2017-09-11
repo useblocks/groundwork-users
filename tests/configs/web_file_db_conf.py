@@ -8,7 +8,4 @@ APP_PATH = os.path.dirname(__file__)
 
 PLUGINS = []
 
-USERS_DB_URL = "sqlite:///"
-
-FLASK_SECURITY_PASSWORD_SALT = "123"
-# FLASK_SECURITY_PASSWORD_HASH = "bcrypt"
+USERS_DB_URL = "sqlite:///{0}".format(os.path.join(os.path.basename(__file__), "../db/test_web.db"))

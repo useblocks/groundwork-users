@@ -14,6 +14,7 @@ FLASK_DEBUG = False
 FLASK_TEMPLATES_AUTO_RELOAD = True
 
 USERS_DB_URL = "sqlite:///"
+USERS_DB_URL = "sqlite://users.db"
 
 
 GROUNDWORK_LOGGING = {
