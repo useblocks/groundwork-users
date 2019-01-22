@@ -22,7 +22,7 @@ class DomainsApplication:
         self.app = app
         self.users_db = users_db
 
-        self.Domain = self.users_db.classes.get("Domain")
+        self.Domain = self.users_db.classes.get("Domain").clazz
         if self.Domain is None:
             raise NoDomainTableException("Database table model 'Domain' not found")
 

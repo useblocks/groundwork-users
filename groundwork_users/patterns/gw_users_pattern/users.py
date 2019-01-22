@@ -28,7 +28,7 @@ class UsersApplication:
         if self.users_db is None:
             raise NoUserDatabaseException("No database 'users_db' found")
 
-        self.User = self.users_db.classes.get("User")
+        self.User = self.users_db.classes.get("User").clazz
         if self.User is None:
             raise NoUserTableException("Database table model 'User' not found")
 

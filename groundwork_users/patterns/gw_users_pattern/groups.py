@@ -20,7 +20,7 @@ class GroupsApplication:
         self.app = app
         self.users_db = users_db
 
-        self.Group = self.users_db.classes.get("Group")
+        self.Group = self.users_db.classes.get("Group").clazz
         if self.Group is None:
             raise NoGroupTableException("Database table model 'Group' not found")
 

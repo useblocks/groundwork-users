@@ -23,7 +23,7 @@ class ApikeysApplication:
         self.app = app
         self.users_db = users_db
 
-        self.Apikey = self.users_db.classes.get("Apikey")
+        self.Apikey = self.users_db.classes.get("Apikey").clazz
         if self.Apikey is None:
             raise NoApikeyTableException("Database table model 'Apikey' not found")
 

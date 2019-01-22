@@ -19,7 +19,7 @@ class RolesApplication:
         self.app = app
         self.users_db = users_db
 
-        self.Role = self.users_db.classes.get("Role")
+        self.Role = self.users_db.classes.get("Role").clazz
         if self.Role is None:
             raise NoRoleTableException("Database table model 'Role' not found")
 

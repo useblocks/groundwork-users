@@ -27,7 +27,7 @@ class PermissionsApplication:
         self.users_db = users_db
         self._permissions = {}
 
-        self.Permission = self.users_db.classes.get("Permission")
+        self.Permission = self.users_db.classes.get("Permission").clazz
         if self.Permission is None:
             raise NoPermissionTableException("Database table model 'Permission' not found")
 

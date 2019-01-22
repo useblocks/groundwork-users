@@ -90,8 +90,8 @@ class GwUsersPattern(GwWebPattern, GwSqlPattern):
     def configure_web_security(self, plugin, *args, **kwargs):
         if self.flask_security is None:
             # Flask-Security configuration
-            User = self.users_db.classes.get("User")
-            Role = self.users_db.classes.get("Role")
+            User = self.users_db.classes.get("User").clazz
+            Role = self.users_db.classes.get("Role").clazz
             user_datastore = SQLAlchemyUserDatastore(self.users_db, User, Role)
 
             # The following configuration is needed to provide the flask-security

@@ -86,23 +86,23 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              url_prefix=prefix_url,
                                              description="Context for user related objects and actions."
                                              )
-        self.web.routes.register("/", ["GET"], endpoint=views.overview,
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview,
                                  context=context.name, description="Show all registered users")
         self._user_menu.register("Users", prefix_url)
 
-        self.web.routes.register("/<user_name>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<user_name>", methods=["GET"], endpoint=views.detail,
                                  name="view_user_detail",
                                  context=context.name, description="Shows details of a user")
 
-        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+        self.web.routes.register("/add", methods=["GET", "POST"], endpoint=views.add,
                                  name="view_user_add",
                                  context=context.name, description="Shows mask for adding new user")
 
-        self.web.routes.register("/edit/<user_name>", ["GET", "POST"], endpoint=views.edit,
+        self.web.routes.register("/edit/<user_name>", methods=["GET", "POST"], endpoint=views.edit,
                                  name="view_user_edit",
                                  context=context.name, description="Shows mask for editing an existing user")
 
-        self.web.routes.register("/delete/<user_name>", ["GET"], endpoint=views.delete,
+        self.web.routes.register("/delete/<user_name>", methods=["GET"], endpoint=views.delete,
                                  name="view_user_delete",
                                  context=context.name, description="Deletes an user")
 
@@ -130,23 +130,23 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              description="Context for domain related objects and actions."
                                              )
 
-        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_domains",
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview, name="view_domains",
                                  context=context.name, description="Show all registered domains")
         self._user_menu.register("Domains", prefix_url)
 
-        self.web.routes.register("/<domain_name>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<domain_name>", methods=["GET"], endpoint=views.detail,
                                  name="view_domain_detail",
                                  context=context.name, description="Shows details of a domain")
 
-        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+        self.web.routes.register("/add", methods=["GET", "POST"], endpoint=views.add,
                                  name="view_domain_add",
                                  context=context.name, description="Shows mask for adding new domain")
 
-        self.web.routes.register("/edit/<domain_name>", ["GET", "POST"], endpoint=views.edit,
+        self.web.routes.register("/edit/<domain_name>", methods=["GET", "POST"], endpoint=views.edit,
                                  name="view_domain_edit",
                                  context=context.name, description="Shows mask for editing a domain")
 
-        self.web.routes.register("/delete/<domain_name>", ["GET"], endpoint=views.delete,
+        self.web.routes.register("/delete/<domain_name>", methods=["GET"], endpoint=views.delete,
                                  name="view_domain_delete",
                                  context=context.name, description="Deletes a domain")
 
@@ -160,23 +160,23 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              description="Context for apikey related objects and actions."
                                              )
 
-        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_apikeys",
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview, name="view_apikeys",
                                  context=context.name, description="Show all registered apikeys")
         self._user_menu.register("Apikeys", prefix_url)
 
-        self.web.routes.register("/<apikey>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<apikey>", methods=["GET"], endpoint=views.detail,
                                  name="view_apikey_detail",
                                  context=context.name, description="Shows details of an apikey")
 
-        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+        self.web.routes.register("/add", methods=["GET", "POST"], endpoint=views.add,
                                  name="view_apikey_add",
                                  context=context.name, description="Shows mask for adding new apikey")
 
-        self.web.routes.register("/delete/<apikey>", ["GET"], endpoint=views.delete,
+        self.web.routes.register("/delete/<apikey>", methods=["GET"], endpoint=views.delete,
                                  name="view_apikey_delete",
                                  context=context.name, description="Deletes an apikey")
 
-        self.web.routes.register("/edit/<apikey>", ["GET", "POST"], endpoint=views.edit,
+        self.web.routes.register("/edit/<apikey>", methods=["GET", "POST"], endpoint=views.edit,
                                  name="view_apikey_edit",
                                  context=context.name, description="Edits an apikey")
 
@@ -190,23 +190,23 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              description="Context for group related objects and actions."
                                              )
 
-        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_groups",
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview, name="view_groups",
                                  context=context.name, description="Show all registered groups")
         self._user_menu.register("Groups", prefix_url)
 
-        self.web.routes.register("/<group_name>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<group_name>", methods=["GET"], endpoint=views.detail,
                                  name="view_group_detail",
                                  context=context.name, description="Shows details of a group")
 
-        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+        self.web.routes.register("/add", methods=["GET", "POST"], endpoint=views.add,
                                  name="view_group_add",
                                  context=context.name, description="Shows mask for adding a new group")
 
-        self.web.routes.register("/edit/<group_name>", ["GET", "POST"], endpoint=views.edit,
+        self.web.routes.register("/edit/<group_name>", methods=["GET", "POST"], endpoint=views.edit,
                                  name="view_group_edit",
                                  context=context.name, description="Shows mask for editing a group")
 
-        self.web.routes.register("/delete/<group_name>", ["GET"], endpoint=views.delete,
+        self.web.routes.register("/delete/<group_name>", methods=["GET"], endpoint=views.delete,
                                  name="view_group_delete",
                                  context=context.name, description="Deletes a group")
 
@@ -220,11 +220,11 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              description="Context for permission related objects and actions."
                                              )
 
-        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_permissions",
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview, name="view_permissions",
                                  context=context.name, description="Show all registered permissions")
         self._user_menu.register("Permissions", prefix_url)
 
-        self.web.routes.register("/<permission_name>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<permission_name>", methods=["GET"], endpoint=views.detail,
                                  name="view_permission_detail",
                                  context=context.name, description="Shows details of a permission")
 
@@ -238,23 +238,23 @@ class GwUsersWebManager(GwUsersPattern, GwWebPattern):
                                              description="Context for role related objects and actions."
                                              )
 
-        self.web.routes.register("/", ["GET"], endpoint=views.overview, name="view_roles",
+        self.web.routes.register("/", methods=["GET"], endpoint=views.overview, name="view_roles",
                                  context=context.name, description="Show all registered roles")
         self._user_menu.register("Roles", prefix_url)
 
-        self.web.routes.register("/<role_name>", ["GET"], endpoint=views.detail,
+        self.web.routes.register("/<role_name>", methods=["GET"], endpoint=views.detail,
                                  name="view_role_detail",
                                  context=context.name, description="Shows details of a role")
 
-        self.web.routes.register("/add", ["GET", "POST"], endpoint=views.add,
+        self.web.routes.register("/add", methods=["GET", "POST"], endpoint=views.add,
                                  name="view_role_add",
                                  context=context.name, description="Shows mask for adding a new role")
 
-        self.web.routes.register("/edit/<role_name>", ["GET", "POST"], endpoint=views.edit,
+        self.web.routes.register("/edit/<role_name>", methods=["GET", "POST"], endpoint=views.edit,
                                  name="view_role_edit",
                                  context=context.name, description="Shows mask for editing a role")
 
-        self.web.routes.register("/delete/<role_name>", ["GET"], endpoint=views.delete,
+        self.web.routes.register("/delete/<role_name>", methods=["GET"], endpoint=views.delete,
                                  name="view_role_delete",
                                  context=context.name, description="Deletes a role")
 
