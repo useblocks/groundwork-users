@@ -13,7 +13,6 @@ from groundwork_users.patterns.gw_users_pattern.groups import GroupsApplication,
 
 
 class GwUsersPattern(GwWebPattern, GwSqlPattern):
-
     def __init__(self, app, *args, **kwargs):
         db_name = "users_db"
         self.flask_security = None
@@ -33,14 +32,22 @@ class GwUsersPattern(GwWebPattern, GwSqlPattern):
 
         if db_url is None or "":
             raise ValueError("USERS_DB_URL must not be None or empty")
-        self.users_db = self.databases.register(db_name, db_url, db_description)
-        models = get_model_classes(self.users_db, self.app)  # User, Permission, Role, Apikey, Domain, Group
 
-        for model in models:
-            self.users_db.classes.register(model)
+        if not hasattr(self.app, "users"):
+            self.users_db = self.databases.register(db_name, db_url, db_description)
 
-        self.users_db.create_all()
+        self.users_db = self.app.databases.get(db_name)
 
+        # Adding a try except statement in case the models are already registered by some other plugin
+        try:
+            models = get_model_classes(self.users_db, self.app)  # User, Permission, Role, Apikey, Domain, Group
+
+            for model in models:
+                self.users_db.classes.register(model)
+            self.users_db.create_all()
+
+        except Exception:
+            pass
         ###############################################################
         # Users configuration
         ###############################################################
@@ -76,16 +83,22 @@ class GwUsersPattern(GwWebPattern, GwSqlPattern):
         self.groups = GroupsPlugin(self)
 
         # Create a signal to configure flask-security after plugin activation.
-        self.signals.connect(receiver="web_users_activation",
-                             signal="gw_web_loaded",
-                             function=self.configure_web_security,
-                             description="Cares about the correct configuration of "
-                                         "flask security for GwUsers",
-                             sender=None)
+        # Adding a try except statement in case the signals are already registered by GwUsersWebManager
 
-        self.anonymous_name = "anonymous"
-        self.anonymous_role = None
-        self.anonymous_user = None
+        try:
+            self.signals.connect(receiver="web_users_activation",
+                                 signal="gw_web_loaded",
+                                 function=self.configure_web_security,
+                                 description="Cares about the correct configuration of "
+                                             "flask security for GwUsers",
+                                 sender=None)
+
+            self.anonymous_name = "anonymous"
+            self.anonymous_role = None
+            self.anonymous_user = None
+
+        except Exception:
+            pass
 
     def configure_web_security(self, plugin, *args, **kwargs):
         if self.flask_security is None:

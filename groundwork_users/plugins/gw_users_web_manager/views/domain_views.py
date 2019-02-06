@@ -15,7 +15,7 @@ class DomainViews:
             :return: Rendered HTML pag (string)
             """
         form = get_domain_form(self.plugin)()
-        form.users.query = self.plugin.user_model.query.filter()
+        form.users.query = self.plugin.user_model.clazz.query.filter()
 
         if form.validate_on_submit():
             domain_object = self.plugin.domains.register(name=form.name.data,

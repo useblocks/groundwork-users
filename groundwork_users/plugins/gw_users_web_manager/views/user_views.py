@@ -21,9 +21,9 @@ class UserViews:
             :return: Rendered HTML pag (string)
             """
         form = get_user_form(self.plugin)()
-        form.roles.query = self.plugin.role_model.query.filter()
-        form.domain.query = self.plugin.domain_model.query.filter()
-        form.groups.query = self.plugin.group_model.query.filter()
+        form.roles.query = self.plugin.role_model.clazz.query.filter()
+        form.domain.query = self.plugin.domain_model.clazz.query.filter()
+        form.groups.query = self.plugin.group_model.query.clazz.filter()
 
         form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 

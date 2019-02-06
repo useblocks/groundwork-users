@@ -15,8 +15,8 @@ class RoleViews:
             :return: Rendered HTML pag (string)
             """
         form = get_role_form(self.plugin)()
-        form.users.query = self.plugin.user_model.query.filter()
-        form.permissions.query = self.plugin.permission_model.query.filter()
+        form.users.query = self.plugin.user_model.clazz.query.filter()
+        form.permissions.query = self.plugin.permission_model.clazz.query.filter()
 
         if form.validate_on_submit():
             role_object = self.plugin.roles.register(name=form.name.data,

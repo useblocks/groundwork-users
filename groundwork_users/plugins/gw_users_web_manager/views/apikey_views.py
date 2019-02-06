@@ -16,7 +16,7 @@ class ApiKeyViews():
             :return: Rendered HTML pag (string)
             """
         form = get_apikey_form(self.plugin)()
-        form.user.query = self.plugin.user_model.query.filter()
+        form.user.query = self.plugin.user_model.clazz.query.filter()
         form.key.data = str(uuid.uuid4())
 
         if form.validate_on_submit():

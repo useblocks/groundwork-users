@@ -15,8 +15,8 @@ class GroupViews:
             :return: Rendered HTML pag (string)
             """
         form = get_group_form(self.plugin)()
-        form.users.query = self.plugin.user_model.query.filter()
-        form.roles.query = self.plugin.role_model.query.filter()
+        form.users.query = self.plugin.user_model.clazz.query.filter()
+        form.roles.query = self.plugin.role_model.clazz.query.filter()
         form.permissions.choices = [(a.name, a.name) for a in self.plugin.app.permissions.get_from_db()]
 
         if form.validate_on_submit():
@@ -24,7 +24,8 @@ class GroupViews:
             # the permissions for the user
             permissions_db = []
             for perm in form.permissions.data:
-                perm_db = self.plugin.app.permissions.users_db.query(self.plugin.app.permissions.Permission).filter_by(
+                perm_db = self.plugin.app.permissions.users_db.clazz.query(
+                    self.plugin.app.permissions.Permission).filter_by(
                     name=perm).first()
                 if perm_db is not None:
                     permissions_db.append(perm_db)
