@@ -40,6 +40,7 @@ def web_app_static_db(app_path):
     from groundwork_users.plugins import GwUsersWebManager
 
     configs = app_configs(app_path, os.path.join("configs", "web_file_db_conf.py"))
+    print(configs)
     app = App(configs, strict=True)
     user_manager = GwUsersWebManager(app)
     user_manager.activate()
@@ -64,6 +65,7 @@ def app_configs(app_path, conf_source):
     """
     final_config_path = os.path.join(app_path, "configuration.py")
     with open(final_config_path, "w") as final_config:
+        app_path = app_path.replace("\\", "\\\\")
         final_config.write("APP_PATH = \"{0}\"\n".format(app_path))
         final_config.write("LOAD_PLUGINS = []\n")
 
