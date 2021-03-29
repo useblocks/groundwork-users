@@ -39,7 +39,7 @@ mimerender==0.6.0         # via flask-restless
 passlib==1.7.1            # via flask-security
 pathlib==1.0.1            # via groundwork
 poyo==0.4.1               # via cookiecutter
-pygments==2.2.0           # via sphinx
+pygments==2.7.4           # via sphinx
 pytest-runner==2.11.1     # via groundwork-web
 python-dateutil==2.6.0    # via arrow, flask-restless
 python-mimeparse==1.6.0   # via mimerender
