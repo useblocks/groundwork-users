@@ -51,7 +51,7 @@ snowballstemmer==1.2.1    # via sphinx
 sphinx==1.6.2             # via groundwork-database, groundwork-web
 sphinxcontrib-websupport==1.0.1  # via sphinx
 sqlalchemy==1.1.10        # via flask-restless, groundwork-database
-urllib3==1.21.1           # via requests
+urllib3==1.26.5           # via requests
 werkzeug==0.12.2          # via flask
 whichcraft==0.4.1         # via cookiecutter
 wtforms==2.1              # via flask-admin, flask-wtf
