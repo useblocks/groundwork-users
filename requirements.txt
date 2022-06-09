@@ -12,7 +12,7 @@ blinker==1.4              # via flask-mail, flask-principal, groundwork
 certifi==2017.4.17        # via requests
 chardet==3.0.4            # via binaryornot, requests
 click==6.7                # via cookiecutter, flask, groundwork
-cookiecutter==1.5.1       # via groundwork
+cookiecutter==2.1.1       # via groundwork
 docutils==0.13.1          # via groundwork, groundwork-web, sphinx
 flask-admin==1.5.0        # via groundwork-web
 flask-babel==0.11.2
