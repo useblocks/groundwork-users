@@ -9,7 +9,7 @@ arrow==0.10.0             # via jinja2-time
 babel==2.4.0              # via flask-babel, sphinx
 binaryornot==0.4.3        # via cookiecutter
 blinker==1.4              # via flask-mail, flask-principal, groundwork
-certifi==2017.4.17        # via requests
+certifi==2022.12.7        # via requests
 chardet==3.0.4            # via binaryornot, requests
 click==6.7                # via cookiecutter, flask, groundwork
 cookiecutter==1.5.1       # via groundwork
